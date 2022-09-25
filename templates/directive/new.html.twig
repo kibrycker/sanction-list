@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Добавление директив{% endblock %}
+
+{% block body %}
+    <a href="{{ path('sanction_list_admin_directive_index') }}">К списку директив</a>
+    <h1>Добавление директив</h1>
+
+    {{ include('directive/_form.html.twig') }}
+{% endblock %}

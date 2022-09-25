@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Новая страна{% endblock %}
+
+{% block body %}
+    <a href="{{ path('sanction_list_admin_country_index') }}" class="btn btn-link">К списку стран</a>
+
+    <h1>Новая страна</h1>
+
+    {{ include('country/_form.html.twig') }}
+
+{% endblock %}

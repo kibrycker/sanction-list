@@ -1,0 +1,92 @@
+{
+  "name": "k2/sanction-list",
+  "description": "Модуль для добавления списков санкций",
+  "license": "proprietary",
+  "type": "library",
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "maksimmartyskin",
+      "email": "email@example.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.1",
+    "ext-ctype": "*",
+    "ext-iconv": "*",
+    "doctrine/orm": "2.13.2",
+    "doctrine/doctrine-bundle": "^2.7",
+    "doctrine/doctrine-migrations-bundle": "^3.2",
+    "symfony/apache-pack": "^1.0",
+    "sensio/framework-extra-bundle": "^6.2",
+    "symfony/flex": "^2.2",
+    "symfony/form": "^6.1",
+    "symfony/framework-bundle": "6.1.*",
+    "symfony/runtime": "6.1.*",
+    "symfony/security-bundle": "^6.1",
+    "symfony/twig-bundle": "^6.1",
+    "symfony/validator": "^6.1",
+    "symfony/yaml": "6.1.*",
+    "k2/components-jsonrpc20-symfony": "dev-master"
+  },
+  "require-dev": {
+    "symfony/css-selector": "^6.1",
+    "symfony/debug-bundle": "^6.1",
+    "symfony/maker-bundle": "^1.45",
+    "symfony/phpunit-bridge": "^6.1",
+    "symfony/web-profiler-bundle": "6.1.*"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": {
+      "*": "dist"
+    },
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "symfony/flex": true,
+      "symfony/runtime": true
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "SanctionList\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SanctionList\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "auto-scripts": {
+      "cache:clear": "symfony-cmd",
+      "assets:install %PUBLIC_DIR%": "symfony-cmd"
+    },
+    "post-install-cmd": [
+      "@auto-scripts"
+    ],
+    "post-update-cmd": [
+      "@auto-scripts"
+    ]
+  },
+  "conflict": {
+    "symfony/symfony": "*"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "require": "6.1.*"
+    }
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "/var/www/modules/jsonrpc20-symfony",
+      "options": {
+        "symlink": true
+      }
+    }
+  ]
+}

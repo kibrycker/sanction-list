@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% set title = 'Список директив' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('sanction_list_admin_organization_index') }}" class="btn btn-link">К списку организаций</a>
+    <h1>{{ title }}</h1>
+
+    <div class="text-right">
+        <a href="{{ path('sanction_list_admin_directive_new') }}" class="btn btn-link">Новая директива</a>
+    </div>
+    <table class="table table-striped table-bordered text-center">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" rowspan="2">Id</th>
+            <th scope="col" rowspan="2">Название</th>
+            <th scope="col" rowspan="2">Описание</th>
+            <th scope="col" colspan="2" class="text-center">Дата</th>
+            <th scope="col" rowspan="2">Действия</th>
+        </tr>
+        <tr>
+            <th scope="col">Создания</th>
+            <th scope="col">Обновления</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for directive in directives %}
+            <tr>
+                <td scope="row">{{ directive.id }}</td>
+                <td>{{ directive.name }}</td>
+                <td>{{ directive.description }}</td>
+                <td>{{ directive.dateCreate ? directive.dateCreate|date('d.m.Y H:i:s') : '' }}</td>
+                <td>{{ directive.dateUpdate ? directive.dateUpdate|date('d.m.Y H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('sanction_list_admin_directive_show', {'id': directive.id}) }}" class="btn btn-info">Просмотр</a>
+                    <a href="{{ path('sanction_list_admin_directive_edit', {'id': directive.id}) }}"
+                       class="btn btn-light">Изменить</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

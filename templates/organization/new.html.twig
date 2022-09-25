@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Добавление информации в санкционный список{% endblock %}
+
+{% block body %}
+    <a href="{{ path('sanction_list_admin_organization_index') }}">К списку организаций</a>
+    <h1>Добавление информации в санкционный список</h1>
+
+    {{ include('organization/_form.html.twig') }}
+{% endblock %}

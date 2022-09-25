@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% set title = 'Список организаций, которым объявили санкции' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+
+    <div class="text-right">
+        <a href="{{ path('sanction_list_admin_organization_new') }}" class="btn btn-link">Новая организация</a>
+    </div>
+    <table class="table table-striped table-bordered text-center">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" rowspan="2">Id</th>
+            <th scope="col" rowspan="2">
+                Название/<br>Реквизиты/<br>Статус
+            </th>
+            <th scope="col" rowspan="2">Страна, которая объявила санкции</th>
+            <th scope="col" colspan="2" class="text-center">Дата</th>
+            <th scope="col" rowspan="2">Директивы</th>
+            <th scope="col" colspan="2" class="text-center">Дата</th>
+            <th scope="col" rowspan="2">Действия</th>
+        </tr>
+        <tr>
+            <th scope="col">Включения</th>
+            <th scope="col">Исключения</th>
+            <th scope="col">Создания</th>
+            <th scope="col">Обновления</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for organization in organizations %}
+            <tr>
+                <td>{{ organization.id }}</td>
+                <td>
+                    {{ organization.name }}
+                    <br>{{ organization.requisite }}
+                    <br>{{ organization.statusOrg }}
+                </td>
+                <td>{{ organization.country }}</td>
+                <td>{{ organization.dateInclusion ? organization.dateInclusion|date('d.m.Y') : '' }}</td>
+                <td>
+                    {{ organization.dateExclusion ? organization.dateExclusion|date('d.m.Y')
+                    : (organization.unknownExdate == '1' ? 'До распоряжения об отмене санкций' : '') }}</td>
+                <td>{{ organization.directive }}</td>
+                <td>{{ organization.dateCreate ? organization.dateCreate|date('d.m.Y H:i:s') : '' }}</td>
+                <td>{{ organization.dateUpdate ? organization.dateUpdate|date('d.m.Y H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('sanction_list_admin_organization_show', {'id': organization.id}) }}"
+                       class="btn btn-info">Просмотр</a>
+                    <a href="{{ path('sanction_list_admin_organization_edit', {'id': organization.id}) }}"
+                       class="btn btn-light">Изменить</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

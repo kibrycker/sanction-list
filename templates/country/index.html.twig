@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% set title = 'Список стран' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('sanction_list_admin_organization_index') }}" class="btn btn-link">К списку организаций</a>
+    <h1>{{ title }}</h1>
+
+    <div class="text-right">
+        <a href="{{ path('sanction_list_admin_country_new') }}" class="btn btn-link">Новая страна</a>
+    </div>
+    <table class="table table-striped table-bordered text-center">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" rowspan="2">Id</th>
+            <th scope="col" rowspan="2">Название</th>
+            <th scope="col" colspan="2" class="text-center">Дата</th>
+            <th scope="col" rowspan="2">
+                Действия&nbsp;&nbsp;&nbsp;
+            </th>
+        </tr>
+        <tr>
+            <th scope="col">Создания</th>
+            <th scope="col">Обновления</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for country in countries %}
+            <tr>
+                <th scope="row">{{ country.id }}</th>
+                <td>{{ country.name }}</td>
+                <td>{{ country.dateCreate ? country.dateCreate|date('d.m.Y H:i:s') : '' }}</td>
+                <td>{{ country.dateUpdate ? country.dateUpdate|date('d.m.Y H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('sanction_list_admin_country_show', {'id': country.id}) }}" class="btn btn-info">Просмотр</a>
+                    <a href="{{ path('sanction_list_admin_country_edit', {'id': country.id}) }}" class="btn btn-light">Изменить</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

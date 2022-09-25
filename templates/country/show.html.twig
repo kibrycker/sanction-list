@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% set title = country.name %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('sanction_list_admin_country_index') }}" class="btn btn-link">К списку стран</a>
+    <h1>{{ title }}</h1>
+
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>Дата внесения данных</th>
+            <td>{{ country.dateCreate ? country.dateCreate|date('d.m.Y H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Дата изменения данных</th>
+            <td>{{ country.dateUpdate ? country.dateUpdate|date('d.m.Y H:i:s') : '' }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-1">
+            <a href="{{ path('sanction_list_admin_country_edit', {'id': country.id}) }}"
+               class="btn btn-light">Изменить</a>
+        </div>
+        <div class="col-1">
+            {{ include('country/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

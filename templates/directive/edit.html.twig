@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Редактирование директивы{% endblock %}
+
+{% block body %}
+    <a href="{{ path('sanction_list_admin_directive_index') }}">К списку директив</a>
+    <h1>Редактирование директивы</h1>
+
+    {{ include('directive/_form.html.twig', {'button_label': 'Сохранить'}) }}
+
+    {{ include('directive/_delete_form.html.twig') }}
+{% endblock %}
