@@ -75,6 +75,7 @@
     "symfony/symfony": "*"
   },
   "extra": {
+    "public-dir": "html",
     "symfony": {
       "allow-contrib": false,
       "require": "6.1.*"
