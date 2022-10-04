@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Мои наработки</a>
+<nav class="navbar navbar-expand-md sticky-top navbar-dark bg-dark">
+    <span class="navbar-brand mb-0 h1">Добавление санкций</span>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Переключатель навигации">
         <span class="navbar-toggler-icon"></span>
@@ -7,20 +7,27 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Главная</a>
+            </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Главная <span class="sr-only">(текущая)</span></a>
+                <a class="nav-link" href="{{ path('sanction_list_admin_organization_index') }}">Добавить
+                    оргаризацию</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Ссылка</a>
+                <a class="nav-link" href="{{ path('sanction_list_admin_country_index') }}">Добавить страну</a>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('sanction_list_admin_directive_index') }}">Добавить
+                    директиву</a>
+            </li>
+            {#<li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     Добавление санкций
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ path('sanction_list_admin_organization_index') }}">Добавить
-                        оргаризацию</a>
+                    <a class="dropdown-item" href="{{ path('sanction_list_admin_organization_index') }}">Добавить оргаризацию</a>
                     <a class="dropdown-item" href="{{ path('sanction_list_admin_country_index') }}">Добавить страну</a>
                     <a class="dropdown-item" href="{{ path('sanction_list_admin_directive_index') }}">Добавить
                         директиву</a>
@@ -30,6 +37,13 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Отключенный</a>
+            </li>#}
+        </ul>
+    </div>
+    <div>
+        <ul class="nav justify-content-end">
+            <li class="nav-item pull-right">
+                <a class="nav-link" href="{{ path('sanction_list_admin_directive_index') }}"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
             </li>
         </ul>
     </div>

@@ -1,3 +1,5 @@
+import 'bootstrap/dist/js/bootstrap.min';
+
 $(document).ready(() => {
   let $isChecked = $('.js-sanction-unknown-exclude-date').is(':checked');
   $('.js-sanction-date-exclusion').attr('disabled', $isChecked);
