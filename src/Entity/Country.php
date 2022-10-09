@@ -36,7 +36,7 @@ class Country
             'unsigned' => true,
             'comment' => 'Идентификатор записи'
         ])]
-        private ?int $id = null,
+        private readonly ?int $id = null,
 
         #[ORM\Column(name: 'name', type: Types::STRING, length: 150, nullable: false, options: [
             'comment' => 'Название страны, союза, организации'

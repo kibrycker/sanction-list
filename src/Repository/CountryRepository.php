@@ -2,22 +2,24 @@
 
 namespace SanctionList\Repository;
 
-use SanctionList\Entity\Country;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Doctrine\Bundle\MongoDBBundle\Repository\ServiceDocumentRepository;
+use SanctionList\Document\Country;
 
 /**
- * @extends ServiceEntityRepository<Country>
+ * @extends ServiceDocumentRepository<Country>
  *
  * @method Country|null find($id, $lockMode = null, $lockVersion = null)
  * @method Country|null findOneBy(array $criteria, array $orderBy = null)
  * @method Country[]    findAll()
  * @method Country[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CountryRepository extends ServiceEntityRepository
+class CountryRepository extends ServiceDocumentRepository
 {
     /**
-     * @param ManagerRegistry $registry
+     * Конструктор
+     *
+     * @param ManagerRegistry $registry менеджер
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -25,58 +27,36 @@ class CountryRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Country $entity
-     * @param bool $flush
+     * Добавление документа
+     *
+     * @param Country $document Документ
+     * @param bool $flush Определение сохранять запись или нет
      *
      * @return void
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
-    public function add(Country $entity, bool $flush = false): void
+    public function add(Country $document, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
-
+        $this->getDocumentManager()->persist($document);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getDocumentManager()->flush();
         }
     }
 
     /**
+     * Удаление документа
      *
-     * @param Country $entity
-     * @param bool $flush
+     * @param Country $document Документ
+     * @param bool $flush Определение сохранять запись или нет
      *
      * @return void
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
-    public function remove(Country $entity, bool $flush = false): void
+    public function remove(Country $document, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
-
+        $this->getDocumentManager()->remove($document);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getDocumentManager()->flush();
         }
     }
-
-//    /**
-//     * @return SanctionListCountry[] Returns an array of SanctionListCountry objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?SanctionListCountry
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

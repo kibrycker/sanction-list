@@ -2,14 +2,14 @@
 
 namespace SanctionList\Form;
 
-use SanctionList\Entity\Country;
+use SanctionList\Document\Country;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use DateTime;
 
 class CountryType extends AbstractType
 {
@@ -27,29 +27,20 @@ class CountryType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Название страны, союза, организации'
             ])
-            ->add('hash', HiddenType::class, ['mapped' => false])
         ;
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function(FormEvent $event) {
             $data = $event->getData();
-            if (($name = $data->getName()) && !$data->getHash()) {
-                $data->setHash(md5($name));
-            }
             if (!$data->getDateCreate()) {
-                $data->setDateCreate(new \DateTime());
+                $data->setDateCreate(new DateTime());
             }
-            if (!$data->getDateUpdate()) {
-                $data->setDateUpdate(new \DateTime());
-            }
+
+            $data->setDateUpdate(new DateTime());
         });
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event) {
-            $data = $event->getData();
             $form = $event->getForm();
-
             $normData = $form->getNormData();
-            $normData->setHash(md5($data['name']));
-
             $form->setData($normData);
         });
 
