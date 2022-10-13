@@ -5,7 +5,7 @@ namespace SanctionList\Controller;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use SanctionList\Document\Country;
 use SanctionList\Form\CountryType;
-use SanctionList\Repository\CountryRepository;
+use SanctionList\Repository\CountryDocRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,11 +16,11 @@ class CountryController extends AbstractController
 {
     /**
      * @param DocumentManager $dm Менеджер документа
-     * @param CountryRepository $repository Репозиторий
+     * @param CountryDocRepository $repository Репозиторий
      */
     public function __construct(
         protected DocumentManager $dm,
-        protected CountryRepository $repository
+        protected CountryDocRepository $repository
     ) {
         $this->repository = $this->dm->getRepository(Country::class);
     }
@@ -42,13 +42,13 @@ class CountryController extends AbstractController
      * Создание новой записи
      *
      * @param Request $request Запрос
-     * @param CountryRepository $repository Репозиторий
+     * @param CountryDocRepository $repository Репозиторий
      *
      * @return Response
      * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     #[Route('/new', name: 'sanction_list_admin_country_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CountryRepository $repository): Response
+    public function new(Request $request, CountryDocRepository $repository): Response
     {
         $country = new Country();
         $form = $this->createForm(CountryType::class, $country);

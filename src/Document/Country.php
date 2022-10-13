@@ -2,14 +2,13 @@
 
 namespace SanctionList\Document;
 
-use SanctionList\Repository\CountryRepository;
-use Doctrine\DBAL\Types\Types;
+use SanctionList\Repository\CountryDocRepository;
+use Doctrine\ODM\MongoDB\Types\Type;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Validator\Constraints as Assert;
-use DateTime;
 use DateTimeInterface;
 
-#[MongoDB\Document(db: 'sanctions_list', collection: 'country', repositoryClass: CountryRepository::class)]
+#[MongoDB\Document(db: 'sanctions_list', collection: 'country', repositoryClass: CountryDocRepository::class)]
 #[MongoDB\HasLifecycleCallbacks]
 class Country
 {
@@ -20,23 +19,24 @@ class Country
      * @param DateTimeInterface|null $dateUpdate Дата обновления записи
      */
     public function __construct(
-        #[MongoDB\Id(name: '_id', type: 'object_id', options: [
+        #[MongoDB\Id(name: '_id', type: Type::OBJECTID, options: [
             'comment' => 'Идентификатор записи'
-        ])]
+        ], strategy: 'AUTO')]
+//        #[MongoDB\ReferenceMany(targetDocument: Organization::class)]
         public ?string $id = null,
 
-        #[MongoDB\Field(name: 'name', type: Types::STRING, options: [
+        #[MongoDB\Field(name: 'name', type: Type::STRING, options: [
             'comment' => 'Название страны, союза, организации'
         ])]
         #[Assert\Length(max: 150, maxMessage: 'Максимум 150 символов')]
         private ?string $name = null,
 
-        #[MongoDB\Field(name: 'dateCreate', type: 'date_immutable', options: [
+        #[MongoDB\Field(name: 'dateCreate', type: Type::DATE_IMMUTABLE, options: [
             'comment' => 'Дата создания записи'
         ])]
         private ?DateTimeInterface $dateCreate = null,
 
-        #[MongoDB\Field(name: 'dateUpdate', type: 'date_immutable', options: [
+        #[MongoDB\Field(name: 'dateUpdate', type: Type::DATE_IMMUTABLE, options: [
             'comment' => 'Дата обновления записи'
         ])]
         private ?DateTimeInterface $dateUpdate = null
@@ -124,13 +124,13 @@ class Country
         return $this;
     }
 
-    /**
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->name;
-    }
+//    /**
+//     *
+//     * @return string
+//     */
+//    public function __toString()
+//    {
+//        return $this->name;
+//    }
 
 }

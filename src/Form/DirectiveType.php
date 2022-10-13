@@ -2,8 +2,11 @@
 
 namespace SanctionList\Form;
 
-use SanctionList\Entity\Directive;
+use SanctionList\Document\Directive;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -25,7 +28,7 @@ class DirectiveType extends AbstractType
             ->add('name', null, [
                 'label' => 'Название директивы'
             ])
-            ->add('description', null, [
+            ->add('description', TextareaType::class, [
                 'label' => 'Описание директивы'
             ])
         ;
@@ -34,9 +37,7 @@ class DirectiveType extends AbstractType
             if (!$data->getDateCreate()) {
                 $data->setDateCreate(new \DateTime());
             }
-            if (!$data->getDateUpdate()) {
-                $data->setDateUpdate(new \DateTime());
-            }
+            $data->setDateUpdate(new \DateTime());
         });
 
     }
