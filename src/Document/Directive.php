@@ -146,6 +146,10 @@ class Directive
         return $this;
     }
 
+    /**
+     * Преобразование в строку значения
+     * @return string|null
+     */
     public function __toString()
     {
         return $this->name;

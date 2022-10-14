@@ -89,8 +89,6 @@ class DirectiveController extends AbstractController
      * Редактирование записи
      *
      * @param Request $request Запрос
-     * @param Directive $directive Сущность
-     * @param DirectiveDocRepository $DirectiveDocRepository Репозиторий
      *
      * @return Response
      * @throws \Doctrine\ODM\MongoDB\LockException
@@ -98,7 +96,7 @@ class DirectiveController extends AbstractController
      * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     #[Route('/{id}/edit', name: 'sanction_list_admin_directive_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request,): Response
+    public function edit(Request $request): Response
     {
         $directive = $this->repository->find($request->get('id'));
         $form = $this->createForm(DirectiveType::class, $directive);

@@ -2,14 +2,16 @@
 
 namespace SanctionList\Form;
 
-use SanctionList\Entity\Country;
-use SanctionList\Entity\Directive;
-use SanctionList\Entity\Organization;
+use Doctrine\Bundle\MongoDBBundle\Form\Type\DocumentType;
+use Doctrine\ODM\MongoDB\Repository\DocumentRepository;
+use SanctionList\Document\Country;
+use SanctionList\Document\Directive;
+use SanctionList\Document\Organization;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -43,15 +45,14 @@ class OrganizationType extends AbstractType
                     'placeholder' => 'ООО "Лютик"'
                 ],
             ])
-            ->add('country', EntityType::class, [
+            ->add('country', DocumentType::class, [
                 'placeholder' => 'Выберите страну, которая применила санкции',
                 'label' => 'Страна',
                 'class' => Country::class,
-                'query_builder' => function(EntityRepository $er) {
-                    return $er->createQueryBuilder('c')
-                        ->orderBy('c.id', 'DESC');
-                },
-//                'property_path' => 'country',
+//                'query_builder' => function(DocumentRepository $dr) {
+//                    return $dr->createQueryBuilder('c')
+//                        ->orderBy('c.id', 'DESC');
+//                },
                 'choice_value' => 'id',
                 'choice_label' => 'name',
             ])
@@ -68,25 +69,31 @@ class OrganizationType extends AbstractType
                     'class' => 'js-sanction-date-exclusion',
                 ],
             ])
-            ->add('unknown_exdate', CheckboxType::class, [
+            ->add('unknownExcDate', CheckboxType::class, [
                 'label' => 'До распоряжения об отмене санкций',
                 'required' => false,
                 'attr' => [
                     'class' => 'js-sanction-unknown-exclude-date',
                 ],
             ])
-            ->add('directive', EntityType::class, [
+            ->add('basic', TextareaType::class, [
+                'label' => 'Основание для введения санкций',
+                'required' => false,
+                'attr' => [
+                    'rows' => 5
+                ]
+            ])
+            ->add('directive', DocumentType::class, [
                 'placeholder' => 'Выберите директиву',
                 'label' => 'Директива',
                 'required' => false,
                 'class' => Directive::class,
-                'query_builder' => function(EntityRepository $er) {
-                    return $er->createQueryBuilder('d')
-                        ->orderBy('d.id', 'DESC');
-                },
+//                'query_builder' => function(EntityRepository $er) {
+//                    return $er->createQueryBuilder('d')
+//                        ->orderBy('d.id', 'DESC');
+//                },
                 'choice_value' => 'id',
                 'choice_label' => 'name',
-//                'property' => 'id',
             ])
         ;
 
@@ -95,37 +102,9 @@ class OrganizationType extends AbstractType
             if (!$data->getDateCreate()) {
                 $data->setDateCreate(new \DateTime());
             }
-            if (!$data->getDateUpdate()) {
-                $data->setDateUpdate(new \DateTime());
-            }
+
+            $data->setDateUpdate(new \DateTime());
         });
-
-//        $builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) {
-//            $data = $event->getData();
-//            $form = $event->getForm();
-//
-//            /** @var $country Country */
-//            $country = $data->getCountry();
-//            $country = $country ? $country->getId() : false;
-//
-////            /** @var $region Region */
-////            $region = $data['region'];
-////            $region = $region ? $region->getId() : false;
-////
-////            $this->modifyForm($form, $country);
-//        });
-
-
-//        $builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
-//            $data = $event->getData();
-//            $form = $event->getForm();
-//
-//            /** @var $country integer */
-//            $country = $data->getCountry() ? (int)$data->getCountry() : null;
-////            $region = (int)$data['region'];
-//
-////            $this->modifyForm($form, $country);
-//        });
     }
 
     /**

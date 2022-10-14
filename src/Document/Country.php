@@ -124,13 +124,14 @@ class Country
         return $this;
     }
 
-//    /**
-//     *
-//     * @return string
-//     */
-//    public function __toString()
-//    {
-//        return $this->name;
-//    }
+    /**
+     * Преобразование в строку значения
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 
 }

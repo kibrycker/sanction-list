@@ -2,7 +2,7 @@
 
 namespace SanctionList\Document;
 
-use Doctrine\DBAL\Types\Types;
+use Doctrine\ODM\MongoDB\Types\Type;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use SanctionList\Repository\OrganizationDocRepository;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -11,7 +11,7 @@ use DateTimeInterface;
 /**
  * Документ с организациями, в отношении которых применены санкции
  *
- * @property  int|null $id Идентификатор
+ * @property string|null $id Идентификатор
  * @property string|null $requisite Реквизиты
  * @property string|null $name Наименование
  * @property string|null $statusOrg Статус организации
@@ -20,6 +20,7 @@ use DateTimeInterface;
  * @property DateTimeInterface|null $dateInclusion Дата включения
  * @property DateTimeInterface|null $dateExclusion Дата исключения
  * @property bool $unknownExcDate До распоряжения об отмене санкций
+ * @property string|null $basic Основание для введения санкций
  * @property Directive|null $directive Директивы из sanctions_list.directive.id
  * @property DateTimeInterface|null $dateCreate Дата создания записи
  * @property DateTimeInterface|null $dateUpdate Дата обновления записи
@@ -32,91 +33,92 @@ use DateTimeInterface;
 #[MongoDB\HasLifecycleCallbacks]
 class Organization
 {
+    /** @var string|null $id Идентификатор */
+    #[MongoDB\Id(name: '_id', type: Type::OBJECTID, options: [
+        'comment' => 'Идентификатор записи',
+    ])]
+    private ?string $id = null;
 
-    /**
-     * @param int|null $id Идентификатор
-     * @param string|null $requisite Реквизиты
-     * @param string|null $name Наименование
-     * @param string|null $statusOrg Статус организации
-     * @param int|null $kartotekaId Идентификатор организации kartoteka_v3_1.organizations
-     * @param Country|null $country Страна, применившая санкции из sanctions_list.country_sanction.id
-     * @param DateTimeInterface|null $dateInclusion Дата включения
-     * @param DateTimeInterface|null $dateExclusion Дата исключения
-     * @param bool $unknownExcDate До распоряжения об отмене санкций
-     * @param Directive|null $directive Директивы из sanctions_list.directive.id
-     * @param DateTimeInterface|null $dateCreate Дата создания записи
-     * @param DateTimeInterface|null $dateUpdate Дата обновления записи
-     */
-    public function __construct(
-        #[MongoDB\Id(name: '_id', type: 'object_id', options: [
-            'comment' => 'Идентификатор записи',
-        ])]
-        protected ?int                $id = null,
+    /** @var string|null $requisite Реквизиты */
+    #[MongoDB\Field(type: Type::STRING, nullable: true, options: [
+        'fixed' => true,
+        'comment' => 'Реквизиты',
+    ])]
+    #[Assert\NotBlank]
+    private ?string $requisite = null;
 
-        #[MongoDB\Field(type: Types::STRING, nullable: true, options: [
-            'fixed' => true,
-            'comment' => 'Реквизиты',
-        ])]
-        #[Assert\NotBlank]
-        protected ?string             $requisite = null,
+    /** @var string|null $name Наименование */
+    #[MongoDB\Field(type: Type::STRING, nullable: true, options: [
+        'comment' => 'Наименование',
+    ])]
+    #[Assert\NotBlank]
+    private ?string $name = null;
 
-        #[MongoDB\Field(type: Types::STRING, nullable: true, options: [
-            'comment' => 'Наименование',
-        ])]
-        #[Assert\NotBlank]
-        protected ?string             $name = null,
+    /** @var string|null $statusOrg Статус организации */
+    #[MongoDB\Field(type: Type::STRING, nullable: true, options: [
+        'comment' => 'Статус организации',
+    ])]
+    private ?string $statusOrg = null;
 
-        #[MongoDB\Field(type: Types::STRING, nullable: true, options: [
-            'comment' => 'Статус организации',
-        ])]
-        protected ?string             $statusOrg = null,
+    /** @var int|null $kartotekaId Идентификатор организации kartoteka_v3_1.organizations */
+    #[MongoDB\Field(type: Type::INT, options: [
+        'comment' => 'kartoteka_v3_1.organizations - id карточки',
+    ])]
+    private ?int $kartotekaId = null;
 
-        #[MongoDB\Field(type: Types::INTEGER, options: [
-            'comment' => 'kartoteka_v3_1.organizations - id карточки',
-        ])]
-        protected ?int                $kartotekaId = null,
+    /** @var Country|null $country Страна, применившая санкции из sanctions_list.country_sanction.id */
+    #[MongoDB\ReferenceOne(options: [
+        'comment' => 'Страна',
+    ], targetDocument: Country::class)]
+    #[Assert\NotBlank]
+    private ?Country $country = null;
 
-        #[MongoDB\ReferenceOne(options: [
-            'comment' => 'Страна'
-        ], targetDocument: Country::class)]
-        #[Assert\NotBlank]
-        protected ?Country            $country = null,
+    /** @var DateTimeInterface|null $dateInclusion Дата включения */
+    #[MongoDB\Field(type: Type::DATE_IMMUTABLE, nullable: true, options: [
+        'comment' => 'Дата включения',
+    ])]
+    private ?\DateTimeInterface $dateInclusion = null;
 
-        #[MongoDB\Field(type: 'date_immutable', nullable: true, options: [
-            'comment' => 'Дата включения',
-        ])]
-        protected ?\DateTimeInterface $dateInclusion = null,
+    /** @var DateTimeInterface|null $dateExclusion Дата исключения */
+    #[MongoDB\Field(type: Type::DATE_IMMUTABLE, nullable: true, options: [
+        'comment' => 'Дата исключения',
+    ])]
+    private ?\DateTimeInterface $dateExclusion = null;
 
-        #[MongoDB\Field(type: 'date_immutable', nullable: true, options: [
-            'comment' => 'Дата исключения',
-        ])]
-        protected ?\DateTimeInterface $dateExclusion = null,
+    /** @var bool $unknownExcDate До распоряжения об отмене санкций */
+    #[MongoDB\Field(type: Type::BOOL, nullable: false, options: [
+        'comment' => 'До распоряжения об отмене санкций',
+    ])]
+    private bool $unknownExcDate = false;
 
-        #[MongoDB\Field(type: Types::BOOLEAN, nullable: false, options: [
-            'comment' => 'До распоряжения об отмене санкций',
-        ])]
-        protected bool                $unknownExcDate = false,
+    /** @var string|null $basic Основание для введения санкций */
+    #[MongoDB\Field(type: Type::STRING, options: [
+        'comment' => '',
+    ])]
+    private ?string $basic = null;
 
-        #[MongoDB\ReferenceOne(targetDocument: Directive::class, inversedBy: 'id')]
-        protected ?Directive          $directive = null,
+    /** @var Directive|null $directive Директивы из sanctions_list.directive.id */
+    #[MongoDB\ReferenceOne(targetDocument: Directive::class, inversedBy: 'id')]
+    private ?Directive $directive = null;
 
-        #[MongoDB\Field(type: 'date_immutable', options: [
-            'comment' => 'Дата создания записи',
-        ])]
-        protected ?\DateTimeInterface $dateCreate = null,
+    /** @var DateTimeInterface|null $dateCreate Дата создания записи */
+    #[MongoDB\Field(type: Type::DATE_IMMUTABLE, options: [
+        'comment' => 'Дата создания записи',
+    ])]
+    private ?\DateTimeInterface $dateCreate = null;
 
-        #[MongoDB\Field(type: 'date_immutable', options: [
-            'comment' => 'Дата обновления записи',
-        ])]
-        protected ?\DateTimeInterface $dateUpdate = null
-    ) {}
+    /** @var DateTimeInterface|null $dateUpdate Дата обновления записи */
+    #[MongoDB\Field(type: Type::DATE_IMMUTABLE, options: [
+        'comment' => 'Дата обновления записи',
+    ])]
+    private ?\DateTimeInterface $dateUpdate = null;
 
     /**
      * Получение идентификатора
      *
-     * @return int|null
+     * @return string|null
      */
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -309,6 +311,30 @@ class Organization
     public function setKartotekaId(?int $kartotekaId): self
     {
         $this->kartotekaId = $kartotekaId;
+
+        return $this;
+    }
+
+    /**
+     * Получение основания для введения санкций
+     *
+     * @return string|null
+     */
+    public function getBasic(): ?string
+    {
+        return $this->basic;
+    }
+
+    /**
+     * Установка основания для введения санкций
+     *
+     * @param string|null $basic Основание для введения санкций
+     *
+     * @return $this
+     */
+    public function setBasic(?string $basic): self
+    {
+        $this->basic = $basic;
 
         return $this;
     }

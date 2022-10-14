@@ -27,17 +27,23 @@
                 <td>{{ organization.dateInclusion ? organization.dateInclusion|date('d.m.Y') : '' }}</td>
             </tr>
         {% endif %}
-        {% if organization.dateExclusion is not null or organization.unknownExdate is not null %}
+        {% if organization.dateExclusion is not null or organization.unknownExcDate is not null %}
             <tr>
                 <th>Дата исключения</th>
                 <td>{{ organization.dateExclusion ? organization.dateExclusion|date('d.m.Y')
-                    : (organization.unknownExdate == '1' ? 'До распоряжения об отмене санкций' : '') }}</td>
+                    : (organization.unknownExcDate == '1' ? 'До распоряжения об отмене санкций' : '') }}</td>
             </tr>
         {% endif %}
         {% if organization.directive is not null %}
             <tr>
                 <th>Директива</th>
                 <td>{{ organization.directive }}</td>
+            </tr>
+        {% endif %}
+        {% if organization.basic is not null %}
+            <tr>
+                <th>Основание для введения санкций</th>
+                <td>{{ organization.basic }}</td>
             </tr>
         {% endif %}
         {% if organization.dateCreate is not null %}

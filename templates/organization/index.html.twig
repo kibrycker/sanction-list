@@ -32,7 +32,7 @@
         <tbody>
         {% for organization in organizations %}
             <tr>
-                <td>{{ organization.id }}</td>
+                <th scope="row">{{ loop.index }}</th>
                 <td>
                     {{ organization.name }}
                     <br>{{ organization.requisite }}
@@ -42,7 +42,7 @@
                 <td>{{ organization.dateInclusion ? organization.dateInclusion|date('d.m.Y') : '' }}</td>
                 <td>
                     {{ organization.dateExclusion ? organization.dateExclusion|date('d.m.Y')
-                    : (organization.unknownExdate == '1' ? 'До распоряжения об отмене санкций' : '') }}</td>
+                    : (organization.unknownExcDate == '1' ? 'До распоряжения об отмене санкций' : '') }}</td>
                 <td>{{ organization.directive }}</td>
                 <td>{{ organization.dateCreate ? organization.dateCreate|date('d.m.Y H:i:s') : '' }}</td>
                 <td>{{ organization.dateUpdate ? organization.dateUpdate|date('d.m.Y H:i:s') : '' }}</td>

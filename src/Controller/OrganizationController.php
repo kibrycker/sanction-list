@@ -2,9 +2,10 @@
 
 namespace SanctionList\Controller;
 
-use SanctionList\Entity\Organization;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use SanctionList\Document\Organization;
 use SanctionList\Form\OrganizationType;
-use SanctionList\Repository\OrganizationRepository;
+use SanctionList\Repository\OrganizationDocRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,17 +15,29 @@ use Symfony\Component\Routing\Annotation\Route;
 class OrganizationController extends AbstractController
 {
     /**
-     * Список организаций
+     * Конструктовр
      *
-     * @param OrganizationRepository $repository Репозиторий
+     * @param DocumentManager $dm Менеджер документа
+     * @param OrganizationDocRepository $repository Репозиторий
+     */
+    public function __construct(
+        protected DocumentManager           $dm,
+        protected OrganizationDocRepository $repository
+    )
+    {
+        $this->repository = $this->dm->getRepository(Organization::class);
+    }
+
+    /**
+     * Список организаций
      *
      * @return Response
      */
     #[Route('/', name: 'sanction_list_admin_organization_index', methods: ['GET'])]
-    public function index(OrganizationRepository $repository): Response
+    public function index(): Response
     {
         return $this->render('organization/index.html.twig', [
-            'organizations' => $repository->findAll(),
+            'organizations' => $this->repository->findAll(),
         ]);
     }
 
@@ -32,21 +45,21 @@ class OrganizationController extends AbstractController
      * Создание новой записи
      *
      * @param Request $request Запрос
-     * @param OrganizationRepository $repository Репозиторий
      *
      * @return Response
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     #[Route('/new', name: 'sanction_list_admin_organization_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, OrganizationRepository $repository): Response
+    public function new(Request $request): Response
     {
         $organization = new Organization();
         $form = $this->createForm(OrganizationType::class, $organization);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->add($organization, true);
+            $this->repository->add($organization, true);
 
-            return $this->redirectToRoute('sanction_list_organization_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('sanction_list_admin_organization_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('organization/new.html.twig', [
@@ -58,13 +71,16 @@ class OrganizationController extends AbstractController
     /**
      * Просмотр записи
      *
-     * @param Organization $organization Сущность
+     * @param Request $request Запрос
      *
      * @return Response
+     * @throws \Doctrine\ODM\MongoDB\LockException
+     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
      */
     #[Route('/{id}', name: 'sanction_list_admin_organization_show', methods: ['GET'])]
-    public function show(Organization $organization): Response
+    public function show(Request $request): Response
     {
+        $organization = $this->repository->find($request->get('id'));
         return $this->render('organization/show.html.twig', [
             'organization' => $organization,
         ]);
@@ -74,23 +90,21 @@ class OrganizationController extends AbstractController
      * Редактирование записи
      *
      * @param Request $request Запрос
-     * @param Organization $organization Сущность
-     * @param OrganizationRepository $repository Репозиторий
      *
      * @return Response
+     * @throws \Doctrine\ODM\MongoDB\LockException
+     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     #[Route('/{id}/edit', name: 'sanction_list_admin_organization_edit', methods: ['GET', 'POST'])]
-    public function edit(
-        Request                $request,
-        Organization           $organization,
-        OrganizationRepository $repository
-    ): Response
+    public function edit(Request $request): Response
     {
+        $organization = $this->repository->find($request->get('id'));
         $form = $this->createForm(OrganizationType::class, $organization);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->add($organization, true);
+            $this->repository->add($organization, true);
 
             return $this->redirectToRoute('sanction_list_admin_organization_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -105,20 +119,18 @@ class OrganizationController extends AbstractController
      * Удаление записи
      *
      * @param Request $request Запрос
-     * @param Organization $organization Сущность
-     * @param OrganizationRepository $repository Репозиторий
      *
      * @return Response
+     * @throws \Doctrine\ODM\MongoDB\LockException
+     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     #[Route('/{id}', name: 'sanction_list_admin_organization_delete', methods: ['POST'])]
-    public function delete(
-        Request                $request,
-        Organization           $organization,
-        OrganizationRepository $repository
-    ): Response
+    public function delete(Request      $request): Response
     {
+        $organization = $this->repository->find($request->get('id'));
         if ($this->isCsrfTokenValid('delete' . $organization->getId(), $request->request->get('_token'))) {
-            $repository->remove($organization, true);
+            $this->repository->remove($organization, true);
         }
 
         return $this->redirectToRoute('sanction_list_admin_organization_index', [], Response::HTTP_SEE_OTHER);
