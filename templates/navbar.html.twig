@@ -8,17 +8,18 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             {% set pathInfo = app.request.pathinfo %}
+            {% set pathRoute = app.request.get ('_route') %}
             <li class="nav-item">
                 <a class="nav-link" href="/">Главная</a>
             </li>
-            <li class="nav-item {% if '/sanction-list/admin/organization/' == pathInfo %}active{% endif %}">
+            <li class="nav-item {% if pathRoute matches '/sanction_list_admin_organization*/' %}active{% endif %}">
                 <a class="nav-link" href="{{ path('sanction_list_admin_organization_index') }}">Добавить
                     организацию</a>
             </li>
-            <li class="nav-item {% if '/sanction-list/admin/country/' == pathInfo %}active{% endif %}">
+            <li class="nav-item {% if pathRoute matches '/sanction_list_admin_country*/' %}active{% endif %}">
                 <a class="nav-link" href="{{ path('sanction_list_admin_country_index') }}">Добавить страну</a>
             </li>
-            <li class="nav-item {% if '/sanction-list/admin/directive/' == pathInfo %}active{% endif %}">
+            <li class="nav-item {% if pathRoute matches '/sanction_list_admin_directive_*/' %}active{% endif %}">
                 <a class="nav-link" href="{{ path('sanction_list_admin_directive_index') }}">Добавить
                     директиву</a>
             </li>

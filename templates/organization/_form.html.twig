@@ -6,16 +6,23 @@
         {{ form_errors(form) }}
     </div>
 
+
     <div class="form-row">
-        <div class="form-group col-md-6">
+        <div class="form-group form-floating col-md-6">
             {{ form_row(form.requisite, {
-                'errors': false
+                'errors': false,
+                'label_attr': {
+                    'class': 'sr-only'
+                }
             }) }}
             {{ form_errors(form.requisite) }}
         </div>
         <div class="form-group col-md-6">
             {{ form_row(form.name, {
-                'errors': false
+                'errors': false,
+                'label_attr': {
+                    'class': 'sr-only'
+                }
             }) }}
             {{ form_errors(form.name) }}
         </div>
@@ -25,17 +32,21 @@
         <div class="form-group col-md-4">
             {{ form_row(form.country, {
                 'is_selected': true,
-                'errors': false
+                'errors': false,
+                'label_attr': {
+                    'class': 'sr-only'
+                }
             }) }}
             {{ form_errors(form.country) }}
-            <a href="{{ path('sanction_list_admin_country_index') }}">Добавить страну</a>
+            <a href="{{ path('sanction_list_admin_country_new') }}">Добавить страну</a>
         </div>
         <div class="form-group col-md-3">
-            {{ form_label(form.date_inclusion) }}
             <div class="input-group date">
                 {{ form_row(form.date_inclusion, {
-                    'label': false,
-                    'errors': false
+                    'errors': false,
+                    'label_attr': {
+                        'class': 'sr-only'
+                    }
                 }) }}
                 <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
@@ -43,11 +54,12 @@
             </div>
         </div>
         <div class="js-sanction-date-exclusion form-group col-md-5">
-            {{ form_label(form.date_exclusion) }}
             <div class="input-group date">
                 {{ form_row(form.date_exclusion, {
-                    'label': false,
-                    'errors': false
+                    'errors': false,
+                    'label_attr': {
+                        'class': 'sr-only'
+                    }
                 }) }}
                 <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
@@ -67,20 +79,24 @@
     </div>
 
     <div class="form-group">
-        {{ form_label(form.basic) }}
         {{ form_row(form.basic, {
-            'label': false,
-            'errors': false
+            'errors': false,
+            'label_attr': {
+                'class': 'sr-only'
+            }
         }) }}
         {{ form_errors(form.basic) }}
     </div>
 
     <div class="js-directive-group">
         {{ form_row(form.directive, {
-            'errors': false
+            'errors': false,
+            'label_attr': {
+                'class': 'sr-only'
+            }
         }) }}
         {{ form_errors(form.directive) }}
-        <a href="{{ path('sanction_list_admin_directive_index') }}">Добавить директиву</a>
+        <a href="{{ path('sanction_list_admin_directive_new') }}">Добавить директиву</a>
     </div>
 
     {# <div class="form-group hidden">
@@ -120,7 +136,7 @@
     {{ form_end(form) }}
 </div>
 
-<!-- Modal -->
+{#
 <div class="modal fade" id="addSanction" tabindex="-1" role="dialog" aria-labelledby="addSanctionLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -141,3 +157,4 @@
         </div>
     </div>
 </div>
+#}

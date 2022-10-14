@@ -35,14 +35,14 @@ class OrganizationType extends AbstractType
                 'label' => 'Реквизит организации (ИНН\ОГРН)',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'ИНН / ОГРН'
+                    'placeholder' => 'Реквизит организации (ИНН\ОГРН)'
                 ],
             ])
             ->add('name', TextType::class, [
                 'label' => 'Название организации',
                 'required' => false,
                 'attr' => [
-                    'placeholder' => 'ООО "Лютик"'
+                    'placeholder' => 'Название организации'
                 ],
             ])
             ->add('country', DocumentType::class, [
@@ -80,6 +80,7 @@ class OrganizationType extends AbstractType
                 'label' => 'Основание для введения санкций',
                 'required' => false,
                 'attr' => [
+                    'placeholder' => 'Основание для введения санкций',
                     'rows' => 5
                 ]
             ])
