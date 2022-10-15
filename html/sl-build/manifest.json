@@ -1,0 +1,12 @@
+{
+  "sl-build/js/sanction-list.js": "/sl-build/js/sanction-list.js",
+  "sl-build/css/sanction-list.css": "/sl-build/css/sanction-list.css",
+  "sl-build/runtime.js": "/sl-build/runtime.js",
+  "sl-build/vendors-node_modules_bootstrap_dist_js_bootstrap_min_js.js": "/sl-build/vendors-node_modules_bootstrap_dist_js_bootstrap_min_js.js",
+  "sl-build/vendors-node_modules_bootstrap_dist_css_bootstrap_min_css-node_modules_font-awesome_css_font--170fbf.css": "/sl-build/vendors-node_modules_bootstrap_dist_css_bootstrap_min_css-node_modules_font-awesome_css_font--170fbf.css",
+  "sl-build/images/fontawesome-webfont.svg?v=4.7.0": "/sl-build/images/fontawesome-webfont.c1e38fd9.svg",
+  "sl-build/fonts/fontawesome-webfont.eot": "/sl-build/fonts/fontawesome-webfont.8b43027f.eot",
+  "sl-build/fonts/fontawesome-webfont.ttf?v=4.7.0": "/sl-build/fonts/fontawesome-webfont.1e59d233.ttf",
+  "sl-build/fonts/fontawesome-webfont.woff?v=4.7.0": "/sl-build/fonts/fontawesome-webfont.f691f37e.woff",
+  "sl-build/fonts/fontawesome-webfont.woff2?v=4.7.0": "/sl-build/fonts/fontawesome-webfont.20fd1704.woff2"
+}

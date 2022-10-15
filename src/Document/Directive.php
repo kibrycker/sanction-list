@@ -32,11 +32,13 @@ class Directive
         #[MongoDB\Field(name: 'dateCreate', type: Type::DATE_IMMUTABLE, options: [
             'comment' => 'Дата создания записи',
         ])]
+        #[MongoDB\Index()]
         protected ?DateTimeInterface $dateCreate = null,
 
         #[MongoDB\Field(name: 'dateUpdate', type: Type::DATE_IMMUTABLE, options: [
             'comment' => 'Дата обновления записи',
         ])]
+        #[MongoDB\Index()]
         protected ?DateTimeInterface $dateUpdate = null
     ) {}
 

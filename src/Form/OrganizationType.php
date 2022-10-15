@@ -49,10 +49,10 @@ class OrganizationType extends AbstractType
                 'placeholder' => 'Выберите страну, которая применила санкции',
                 'label' => 'Страна',
                 'class' => Country::class,
-//                'query_builder' => function(DocumentRepository $dr) {
-//                    return $dr->createQueryBuilder('c')
-//                        ->orderBy('c.id', 'DESC');
-//                },
+                'query_builder' => function(DocumentRepository $dr) {
+                    return $dr->createQueryBuilder('c')
+                        ->sort('id', 'DESC');
+                },
                 'choice_value' => 'id',
                 'choice_label' => 'name',
             ])
@@ -89,10 +89,10 @@ class OrganizationType extends AbstractType
                 'label' => 'Директива',
                 'required' => false,
                 'class' => Directive::class,
-//                'query_builder' => function(EntityRepository $er) {
-//                    return $er->createQueryBuilder('d')
-//                        ->orderBy('d.id', 'DESC');
-//                },
+                'query_builder' => function(DocumentRepository $dr) {
+                    return $dr->createQueryBuilder('d')
+                        ->sort('id', 'DESC');
+                },
                 'choice_value' => 'id',
                 'choice_label' => 'name',
             ])

@@ -13,15 +13,13 @@
                 <a class="nav-link" href="/">Главная</a>
             </li>
             <li class="nav-item {% if pathRoute matches '/sanction_list_admin_organization*/' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('sanction_list_admin_organization_index') }}">Добавить
-                    организацию</a>
+                <a class="nav-link" href="{{ path('sanction_list_admin_organization_index') }}">Организации</a>
             </li>
             <li class="nav-item {% if pathRoute matches '/sanction_list_admin_country*/' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('sanction_list_admin_country_index') }}">Добавить страну</a>
+                <a class="nav-link" href="{{ path('sanction_list_admin_country_index') }}">Страны</a>
             </li>
             <li class="nav-item {% if pathRoute matches '/sanction_list_admin_directive_*/' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('sanction_list_admin_directive_index') }}">Добавить
-                    директиву</a>
+                <a class="nav-link" href="{{ path('sanction_list_admin_directive_index') }}">Директивы</a>
             </li>
             {#<li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

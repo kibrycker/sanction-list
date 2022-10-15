@@ -34,11 +34,13 @@ class Country
         #[MongoDB\Field(name: 'dateCreate', type: Type::DATE_IMMUTABLE, options: [
             'comment' => 'Дата создания записи'
         ])]
+        #[MongoDB\Index()]
         private ?DateTimeInterface $dateCreate = null,
 
         #[MongoDB\Field(name: 'dateUpdate', type: Type::DATE_IMMUTABLE, options: [
             'comment' => 'Дата обновления записи'
         ])]
+        #[MongoDB\Index()]
         private ?DateTimeInterface $dateUpdate = null
     ) {}
 

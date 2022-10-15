@@ -44,6 +44,7 @@ class Organization
         'fixed' => true,
         'comment' => 'Реквизиты',
     ])]
+    #[MongoDB\Index()]
     #[Assert\NotBlank]
     private ?string $requisite = null;
 
@@ -64,12 +65,14 @@ class Organization
     #[MongoDB\Field(type: Type::INT, options: [
         'comment' => 'kartoteka_v3_1.organizations - id карточки',
     ])]
+    #[MongoDB\Index()]
     private ?int $kartotekaId = null;
 
     /** @var Country|null $country Страна, применившая санкции из sanctions_list.country_sanction.id */
     #[MongoDB\ReferenceOne(options: [
         'comment' => 'Страна',
     ], targetDocument: Country::class)]
+    #[MongoDB\Index()]
     #[Assert\NotBlank]
     private ?Country $country = null;
 
@@ -77,40 +80,46 @@ class Organization
     #[MongoDB\Field(type: Type::DATE_IMMUTABLE, nullable: true, options: [
         'comment' => 'Дата включения',
     ])]
+    #[MongoDB\Index()]
     private ?\DateTimeInterface $dateInclusion = null;
 
     /** @var DateTimeInterface|null $dateExclusion Дата исключения */
     #[MongoDB\Field(type: Type::DATE_IMMUTABLE, nullable: true, options: [
         'comment' => 'Дата исключения',
     ])]
+    #[MongoDB\Index()]
     private ?\DateTimeInterface $dateExclusion = null;
 
     /** @var bool $unknownExcDate До распоряжения об отмене санкций */
     #[MongoDB\Field(type: Type::BOOL, nullable: false, options: [
         'comment' => 'До распоряжения об отмене санкций',
     ])]
+    #[MongoDB\Index()]
     private bool $unknownExcDate = false;
 
     /** @var string|null $basic Основание для введения санкций */
     #[MongoDB\Field(type: Type::STRING, options: [
-        'comment' => '',
+        'comment' => 'Основание для введения санкций',
     ])]
     private ?string $basic = null;
 
     /** @var Directive|null $directive Директивы из sanctions_list.directive.id */
     #[MongoDB\ReferenceOne(targetDocument: Directive::class, inversedBy: 'id')]
+    #[MongoDB\Index()]
     private ?Directive $directive = null;
 
     /** @var DateTimeInterface|null $dateCreate Дата создания записи */
     #[MongoDB\Field(type: Type::DATE_IMMUTABLE, options: [
         'comment' => 'Дата создания записи',
     ])]
+    #[MongoDB\Index()]
     private ?\DateTimeInterface $dateCreate = null;
 
     /** @var DateTimeInterface|null $dateUpdate Дата обновления записи */
     #[MongoDB\Field(type: Type::DATE_IMMUTABLE, options: [
         'comment' => 'Дата обновления записи',
     ])]
+    #[MongoDB\Index()]
     private ?\DateTimeInterface $dateUpdate = null;
 
     /**
