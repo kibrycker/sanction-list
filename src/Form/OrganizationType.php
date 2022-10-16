@@ -51,7 +51,7 @@ class OrganizationType extends AbstractType
                 'class' => Country::class,
                 'query_builder' => function(DocumentRepository $dr) {
                     return $dr->createQueryBuilder('c')
-                        ->sort('id', 'DESC');
+                        ->sort('dateUpdate', 'DESC');
                 },
                 'choice_value' => 'id',
                 'choice_label' => 'name',
@@ -91,7 +91,7 @@ class OrganizationType extends AbstractType
                 'class' => Directive::class,
                 'query_builder' => function(DocumentRepository $dr) {
                     return $dr->createQueryBuilder('d')
-                        ->sort('id', 'DESC');
+                        ->sort('dateUpdate', 'DESC');
                 },
                 'choice_value' => 'id',
                 'choice_label' => 'name',

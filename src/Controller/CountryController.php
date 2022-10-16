@@ -14,6 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/sanction-list/admin/country')]
 class CountryController extends AbstractController
 {
+    /** @var int Лимит выводимого списка */
+    private const DEFAULT_LIMIT_LIST = 10;
+
     /**
      * @param DocumentManager $dm Менеджер документа
      * @param CountryDocRepository $repository Репозиторий
@@ -28,13 +31,29 @@ class CountryController extends AbstractController
     /**
      * Список стран
      *
+     * @param int $page Номер страницы
+     *
      * @return Response
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
-    #[Route('/', name: 'sanction_list_admin_country_index', methods: ['GET'])]
-    public function index(): Response
+    #[Route(
+        '/{page}',
+        name: 'sanction_list_admin_country_index',
+        requirements: ['page' => "\d+"],
+        methods: ['GET']
+    )]
+    public function index(int $page = 1): Response
     {
+        $offset = self::DEFAULT_LIMIT_LIST * $page - self::DEFAULT_LIMIT_LIST;
+        $countries = $this->repository->findBy([], [
+            'dateUpdate' => 'DESC'
+        ], self::DEFAULT_LIMIT_LIST, $offset);
+        $countPages = (int)ceil($this->repository->count() / self::DEFAULT_LIMIT_LIST);
         return $this->render('country/index.html.twig', [
-            'countries' => $this->repository->findAll(),
+            'page' => $page,
+            'countPages' => $countPages,
+            'offset' => $offset,
+            'countries' => $countries,
         ]);
     }
 
@@ -42,20 +61,19 @@ class CountryController extends AbstractController
      * Создание новой записи
      *
      * @param Request $request Запрос
-     * @param CountryDocRepository $repository Репозиторий
      *
      * @return Response
      * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
     #[Route('/new', name: 'sanction_list_admin_country_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, CountryDocRepository $repository): Response
+    public function new(Request $request): Response
     {
         $country = new Country();
         $form = $this->createForm(CountryType::class, $country);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $repository->add($country, true);
+            $this->repository->add($country, true);
 
             return $this->redirectToRoute('sanction_list_admin_country_index', [
 
@@ -71,16 +89,16 @@ class CountryController extends AbstractController
     /**
      * Просмотр записи
      *
-     * @param string $id Идентификатор документа
+     * @param Request $request Запрос
      *
      * @return Response
      * @throws \Doctrine\ODM\MongoDB\LockException
      * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
      */
     #[Route('/{id}', name: 'sanction_list_admin_country_show', methods: ['GET'])]
-    public function show(string $id): Response
+    public function show(Request $request): Response
     {
-        $country = $this->repository->find($id);
+        $country = $this->repository->find($request->get('id'));
         return $this->render('country/show.html.twig', [
             'country' => $country,
         ]);

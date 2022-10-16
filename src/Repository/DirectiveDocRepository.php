@@ -52,4 +52,15 @@ class DirectiveDocRepository extends ServiceDocumentRepository
         }
     }
 
+    /**
+     * Получение количества записей
+     *
+     * @return int
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function count(): int
+    {
+        return $this->dm->createQueryBuilder(Directive::class)
+            ->count()->getQuery()->execute();
+    }
 }
