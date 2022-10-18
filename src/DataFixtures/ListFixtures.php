@@ -20,7 +20,7 @@ class ListFixtures extends Fixture
     /** @var int Лимит фейковых записей для директив */
     private const LIMIT_RECORD_DIRECTIVE = 20;
     /** @var int Лимит фейковых записей для организаций */
-    private const LIMIT_RECORD_ORGANIZATION = 150;
+    private const LIMIT_RECORD_ORGANIZATION = 350;
     /** @var string Используемая локаль для получения фейковых данных */
     private const FAKER_LOCALE = 'ru_RU';
 

@@ -14,6 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/sanction-list/admin/organization')]
 class OrganizationController extends AbstractController
 {
+    /** @var int Лимит выводимого списка */
+    private const DEFAULT_LIMIT_LIST = 10;
+
     /**
      * Конструктовр
      *
@@ -31,13 +34,34 @@ class OrganizationController extends AbstractController
     /**
      * Список организаций
      *
+     * @param int $page Номер страницы
+     *
      * @return Response
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
      */
-    #[Route('/', name: 'sanction_list_admin_organization_index', methods: ['GET'])]
-    public function index(): Response
+    #[Route(
+        '/{page}',
+        name: 'sanction_list_admin_organization_index',
+        requirements: ['page' => "\d+"],
+        methods: ['GET']
+    )]
+    public function index(int $page = 1): Response
     {
+        $offset = self::DEFAULT_LIMIT_LIST * $page - self::DEFAULT_LIMIT_LIST;
+        $organizations = $this->repository->findBy([], [
+            'dateUpdate' => 'DESC'
+        ], self::DEFAULT_LIMIT_LIST, $offset);
+        $countPages = (int)ceil($this->repository->count() / self::DEFAULT_LIMIT_LIST);
+        $pagination = $this->renderView('pagination.html.twig', [
+            'page' => $page,
+            'countPages' => $countPages,
+            'offset' => $offset,
+            'urlPath' => 'sanction_list_admin_organization_index',
+        ]);
         return $this->render('organization/index.html.twig', [
-            'organizations' => $this->repository->findAll(),
+            'offset' => $offset,
+            'organizations' => $organizations,
+            'pagination' => $pagination,
         ]);
     }
 

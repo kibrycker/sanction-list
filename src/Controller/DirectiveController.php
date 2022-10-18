@@ -50,11 +50,16 @@ class DirectiveController extends AbstractController
             'dateUpdate' => 'DESC'
         ], self::DEFAULT_LIMIT_LIST, $offset);
         $countPages = (int)ceil($this->repository->count() / self::DEFAULT_LIMIT_LIST);
-        return $this->render('directive/index.html.twig', [
+        $pagination = $this->renderView('pagination.html.twig', [
             'page' => $page,
             'countPages' => $countPages,
             'offset' => $offset,
+            'urlPath' => 'sanction_list_admin_directive_index',
+        ]);
+        return $this->render('directive/index.html.twig', [
+            'offset' => $offset,
             'directives' => $directives,
+            'pagination' => $pagination,
         ]);
     }
 

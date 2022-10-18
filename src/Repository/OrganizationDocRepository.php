@@ -52,4 +52,15 @@ class OrganizationDocRepository extends ServiceDocumentRepository
         }
     }
 
+    /**
+     * Получение количества записей
+     *
+     * @return int
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function count(): int
+    {
+        return $this->dm->createQueryBuilder(Organization::class)
+            ->count()->getQuery()->execute();
+    }
 }

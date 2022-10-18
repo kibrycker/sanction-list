@@ -1,0 +1,38 @@
+{% if (countPages > 1) %}
+    {% set sizeBtnViw = 5 %}
+    <nav aria-label="Page navigation organization">
+        <ul class="pagination justify-content-end">
+            {% if (page > 1) %}
+                <li class="page-item">
+                    <a class="page-link" aria-label="Previous"
+                       href="{{ path('sanction_list_admin_organization_index', {'page': page - 1}) }}">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% for numPages in range(1, countPages) %}
+                {% set classHideBegin = '' %}
+                {% set classHideEnd = '' %}
+                {% if (page >= (numPages + sizeBtnViw)) %}
+                    {% set classHideBegin = 'd-none' %}
+                {% endif %}
+                {% if (page <= (numPages - sizeBtnViw)) %}
+                    {% set classHideEnd = 'd-none' %}
+                {% endif %}
+                <li class="page-item {{ classHideBegin}} {{ classHideEnd}}
+                    {% if (numPages == page) %}active{% endif %}">
+                    <a class="page-link"
+                       href="{{ path(urlPath, {'page': numPages}) }}">{{ numPages }}</a>
+                </li>
+            {% endfor %}
+            {% if (page < countPages) %}
+                <li class="page-item">
+                    <a class="page-link" aria-label="Next"
+                       href="{{ path('sanction_list_admin_organization_index', {'page': page + 1}) }}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}

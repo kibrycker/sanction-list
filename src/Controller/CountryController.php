@@ -49,11 +49,16 @@ class CountryController extends AbstractController
             'dateUpdate' => 'DESC'
         ], self::DEFAULT_LIMIT_LIST, $offset);
         $countPages = (int)ceil($this->repository->count() / self::DEFAULT_LIMIT_LIST);
-        return $this->render('country/index.html.twig', [
+        $pagination = $this->renderView('pagination.html.twig', [
             'page' => $page,
             'countPages' => $countPages,
             'offset' => $offset,
+            'urlPath' => 'sanction_list_admin_country_index',
+        ]);
+        return $this->render('country/index.html.twig', [
+            'offset' => $offset,
             'countries' => $countries,
+            'pagination' => $pagination,
         ]);
     }
 

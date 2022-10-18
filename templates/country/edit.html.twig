@@ -6,9 +6,5 @@
     <a href="{{ path('sanction_list_admin_country_index') }}" class="btn btn-link">К списку стран</a>
     <h1>Редактирование страны, союза, организации</h1>
 
-    {{ include('country/_form.html.twig', {'button_label': 'Сохранить'}) }}
-
-    <div class="col-1">
-    {{ include('country/_delete_form.html.twig') }}
-    </div>
+    {{ include('country/_form.html.twig', {'button_label': 'Сохранить', 'is_edit': true}) }}
 {% endblock %}

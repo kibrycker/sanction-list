@@ -33,8 +33,8 @@
                 <td>{{ country.dateCreate ? country.dateCreate|date('d.m.Y H:i:s') : '' }}</td>
                 <td>{{ country.dateUpdate ? country.dateUpdate|date('d.m.Y H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('sanction_list_admin_country_show', {'id': country.id}) }}" class="btn btn-info">Просмотр</a>
-                    <a href="{{ path('sanction_list_admin_country_edit', {'id': country.id}) }}" class="btn btn-light">Изменить</a>
+                    <a href="{{ path('sanction_list_admin_country_show', {'id': country.id}) }}" class="btn btn-info" data-toggle="tooltip" title="Просмотр"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    <a href="{{ path('sanction_list_admin_country_edit', {'id': country.id}) }}" class="btn btn-secondary" data-toggle="tooltip" title="Изменить"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -44,32 +44,5 @@
         {% endfor %}
         </tbody>
     </table>
-    {% if (countPages > 1) %}
-        <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-end">
-                {% if (page > 1) %}
-                    <li class="page-item">
-                        <a class="page-link" aria-label="Previous"
-                           href="{{ path('sanction_list_admin_country_index', {'page': page - 1}) }}">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                {% endif %}
-                {% for numPages in range(1, countPages) %}
-                    <li class="page-item {% if (numPages == page) %}active{% endif %}">
-                        <a class="page-link"
-                           href="{{ path('sanction_list_admin_country_index', {'page': numPages}) }}">{{ numPages }}</a>
-                    </li>
-                {% endfor %}
-                {% if (page < countPages) %}
-                    <li class="page-item">
-                        <a class="page-link" aria-label="Next"
-                           href="{{ path('sanction_list_admin_country_index', {'page': page + 1}) }}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-    {% endif %}
+    {{ pagination|raw }}
 {% endblock %}

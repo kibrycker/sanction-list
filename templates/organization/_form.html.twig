@@ -1,12 +1,6 @@
 <div class="row">
     {{ form_start(form, {'attr': {'class': 'js-add-into-sunctions-list'}}) }}
-    <div class="alert alert-success js-sanction-success" role="alert" style="display: none">
-    </div>
-    <div class="alert alert-danger js-sanction-error" role="alert" style="display: none">
-        {{ form_errors(form) }}
-    </div>
-
-
+    {{ form_errors(form) }}
     <div class="form-row">
         <div class="form-group form-floating col-md-6">
             {{ form_row(form.requisite, {
@@ -99,62 +93,14 @@
         <a href="{{ path('sanction_list_admin_directive_new') }}">Добавить директиву</a>
     </div>
 
-    {# <div class="form-group hidden">
-            <p>
-                <a class="btn btn-primary" data-toggle="collapse" href="#addDirective" role="button"
-                   aria-expanded="false" aria-controls="addDirective">
-                    Добавить директиву
-                </a>
-            </p>
-            <div class="collapse" id="addDirective">
-                <div class="alert alert-danger js-directive-error" role="alert" style="display: none;">
-                </div>
-                <div class="col-xs-12 form-group required">
-                    <label for="directiveName">Название директивы</label>
-                    <input class="form-control" size="4" type="text" name="directiveName"
-                           id="directiveName">
-                </div>
-                <div class="col-xs-12 form-group required">
-                    <label for="directiveDescription">Описание директивы</label>
-                    <textarea class="form-control" id="directiveDescription"
-                              name="directiveDescription"></textarea>
-                </div>
-                <div class="col-md-2 form-group">
-                    <button class="form-control btn btn-primary submit-button js-add-directive"
-                            type="submit">OK
-                    </button>
-                </div>
-            </div>
-        </div> #}
-
     <div class="form-group text-right">
-        <button type="submit" class="btn btn-primary">{{ button_label|default('Сохранить') }}</button>
-        {# <button class="form-control btn btn-primary submit-button" type="submit" data-toggle="modal"
-                    data-target="#addSanction" onclick="return false">
-            </button> #}
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-floppy-o" aria-hidden="true"></i>&nbsp;
+            {{ button_label|default('Сохранить') }}
+        </button>
+        {% if is_edit %}
+            {{ include('organization/_delete_form.html.twig') }}
+        {% endif %}
     </div>
     {{ form_end(form) }}
 </div>
-
-{#
-<div class="modal fade" id="addSanction" tabindex="-1" role="dialog" aria-labelledby="addSanctionLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Проверка правильности введенных данных</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Убедитесь что добавляемые данные введены верно!
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
-                <button type="button" class="btn btn-primary js-add-sanction-button">Добавить</button>
-            </div>
-        </div>
-    </div>
-</div>
-#}
