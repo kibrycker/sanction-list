@@ -3,44 +3,74 @@
 namespace SanctionList\Controller;
 
 use JsonRpc\Controller;
-use SanctionList\Repository\OrganizationRepository;
+use SanctionList\DTO\SearchParamsDTO;
+use SanctionList\Repository\OrganizationDocRepository;
 
 class ApiController extends Controller
 {
     /**
-     * @param OrganizationRepository $repository Репозиторий организации
+     * @param OrganizationDocRepository $repository Репозиторий организации
      */
     public function __construct(
-        private readonly OrganizationRepository $repository
-    )
-    {}
+        private readonly OrganizationDocRepository $repository
+    ) {}
 
     /**
      * Поиск организаций, имеющих санкции
      *
-     * @param int|null $requisite Реквизиты организации
+     * @param SearchParamsDTO $params Реквизиты организации
      *
      * @return array
      */
-    public function search(int $requisite = null): array
+    public function search(SearchParamsDTO $params): array
     {
-        if (empty($requisite)) {
+        $requestParams = [];
+        if ($params->requisite) {
+            $requestParams['requisite'] = $params->requisite;
+        }
+        if ($params->kartotekaId) {
+            $requestParams['kartotekaId'] = $params->kartotekaId;
+        }
+        if (empty($requestParams)) {
             return [];
         }
 
-        $org = $this->repository->findOneBy(['requisite' => $requisite]);
+        $offset = $params->size * ($params->from - 1);
+        $data = $this->repository->findBy($requestParams, $params->orderBy, $params->size, $offset);
         return [
-            'name' => $org->getName(),
-            'requisite' => $org->getRequisite(),
-            'status' => $org->getStatusOrg(),
-            'kartotekaId' => $org->getKartotekaId(),
-            'date' => [
-                'inclusion' => $org->getDateInclusion()?->format('Y-m-d'),
-                'exclusion' => $org->getDateExclusion()?->format('Y-m-d'),
-                'unknown' => $org->getUnknownExdate(),
-            ],
-            'country' => $org->getCountry()->getName(),
-            'directive' => $org->getDirective()->getName(),
+            'data' => array_map(function ($datum) {
+                return [
+                    'name' => $datum->getName(),
+                    'requisite' => $datum->getRequisite(),
+                    'status' => $datum->getStatusOrg(),
+                    'kartotekaId' => $datum->getKartotekaId(),
+                    'date' => [
+                        'inclusion' => $datum->getDateInclusion()?->format('Y-m-d'),
+                        'exclusion' => $datum->getDateExclusion()?->format('Y-m-d'),
+                        'unknown' => $datum->getUnknownExcDate(),
+                    ],
+                    'country' => $datum->getCountry()?->getName(),
+                    'directive' => $datum->getDirective()?->getName(),
+                ];
+            }, $data),
         ];
+        $result = [];
+        foreach ($data as $datum) {
+            $result['data'][] = [
+                'name' => $datum->getName(),
+                'requisite' => $datum->getRequisite(),
+                'status' => $datum->getStatusOrg(),
+                'kartotekaId' => $datum->getKartotekaId(),
+                'date' => [
+                    'inclusion' => $datum->getDateInclusion()?->format('Y-m-d'),
+                    'exclusion' => $datum->getDateExclusion()?->format('Y-m-d'),
+                    'unknown' => $datum->getUnknownExcDate(),
+                ],
+                'country' => $datum->getCountry()?->getName(),
+                'directive' => $datum->getDirective()?->getName(),
+            ];
+        }
+
+        return $result;
     }
 }
