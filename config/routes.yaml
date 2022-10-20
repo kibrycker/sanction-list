@@ -2,7 +2,6 @@ controllers:
     resource: ../src/Controller/
     type: attribute
 
-## имя маршрута "sanction_list_organization_index" пока не важно
-#sanction_list_organization_index:
-#    path: /sanction-list-test/admin/organization
-#    controller: SanctionList\Controller\OrganizationController::index
+sanction_list_api:
+    path: /sanction-list/api
+    controller: SanctionList\Controller\ApiController::index

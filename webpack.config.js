@@ -8,11 +8,9 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 
 Encore
     // directory where compiled assets will be stored
-    .setOutputPath('html/sl-build')
+    .setOutputPath('html/build')
     // public path used by the web server to access the output path
-    .setPublicPath('/sl-build')
-    // .setPublicPath('/var/www/vendor/k2/sanction-list/html/sl-build')
-    // .setPublicPath('/sl-build')
+    .setPublicPath('/build')
     // only needed for CDN's or sub-directory deploy
     // .setManifestKeyPrefix('/build')
 
