@@ -5,7 +5,7 @@ namespace SanctionList\Controller;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use SanctionList\Document\Country;
 use SanctionList\Form\CountryType;
-use SanctionList\Repository\CountryDocRepository;
+use SanctionList\Repository\CountryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +19,11 @@ class CountryController extends AbstractController
 
     /**
      * @param DocumentManager $dm Менеджер документа
-     * @param CountryDocRepository $repository Репозиторий
+     * @param CountryRepository $repository Репозиторий
      */
     public function __construct(
         protected DocumentManager $dm,
-        protected CountryDocRepository $repository
+        protected CountryRepository $repository
     ) {
         $this->repository = $this->dm->getRepository(Country::class);
     }

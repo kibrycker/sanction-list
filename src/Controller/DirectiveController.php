@@ -5,7 +5,7 @@ namespace SanctionList\Controller;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use SanctionList\Document\Directive;
 use SanctionList\Form\DirectiveType;
-use SanctionList\Repository\DirectiveDocRepository;
+use SanctionList\Repository\DirectiveRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +19,11 @@ class DirectiveController extends AbstractController
 
     /**
      * @param DocumentManager $dm Менеджер документа
-     * @param DirectiveDocRepository $repository Репозиторий
+     * @param DirectiveRepository $repository Репозиторий
      */
     public function __construct(
         protected DocumentManager        $dm,
-        protected DirectiveDocRepository $repository
+        protected DirectiveRepository $repository
     )
     {
         $this->repository = $this->dm->getRepository(Directive::class);

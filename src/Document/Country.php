@@ -2,13 +2,13 @@
 
 namespace SanctionList\Document;
 
-use SanctionList\Repository\CountryDocRepository;
+use SanctionList\Repository\CountryRepository;
 use Doctrine\ODM\MongoDB\Types\Type;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTimeInterface;
 
-#[MongoDB\Document(db: 'sanctions_list', collection: 'country', repositoryClass: CountryDocRepository::class)]
+#[MongoDB\Document(db: 'sanctions_list', collection: 'country', repositoryClass: CountryRepository::class)]
 #[MongoDB\HasLifecycleCallbacks]
 class Country
 {

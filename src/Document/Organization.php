@@ -4,7 +4,7 @@ namespace SanctionList\Document;
 
 use Doctrine\ODM\MongoDB\Types\Type;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use SanctionList\Repository\OrganizationDocRepository;
+use SanctionList\Repository\OrganizationRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTimeInterface;
 
@@ -28,7 +28,7 @@ use DateTimeInterface;
 #[MongoDB\Document(
     db: 'sanctions_list',
     collection: 'organization',
-    repositoryClass: OrganizationDocRepository::class
+    repositoryClass: OrganizationRepository::class
 )]
 #[MongoDB\HasLifecycleCallbacks]
 class Organization

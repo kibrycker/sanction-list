@@ -5,7 +5,7 @@ namespace SanctionList\Controller;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use SanctionList\Document\Organization;
 use SanctionList\Form\OrganizationType;
-use SanctionList\Repository\OrganizationDocRepository;
+use SanctionList\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +21,11 @@ class OrganizationController extends AbstractController
      * Конструктовр
      *
      * @param DocumentManager $dm Менеджер документа
-     * @param OrganizationDocRepository $repository Репозиторий
+     * @param OrganizationRepository $repository Репозиторий
      */
     public function __construct(
         protected DocumentManager           $dm,
-        protected OrganizationDocRepository $repository
+        protected OrganizationRepository $repository
     )
     {
         $this->repository = $this->dm->getRepository(Organization::class);

@@ -59,4 +59,16 @@ class CountryRepository extends ServiceDocumentRepository
             $this->getDocumentManager()->flush();
         }
     }
+
+    /**
+     * Получение количества записей
+     *
+     * @return int
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function count(): int
+    {
+        return $this->dm->createQueryBuilder(Country::class)
+            ->count()->getQuery()->execute();
+    }
 }

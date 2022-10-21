@@ -2,65 +2,65 @@
 
 namespace SanctionList\Repository;
 
-use SanctionList\Entity\Directive;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Doctrine\Bundle\MongoDBBundle\Repository\ServiceDocumentRepository;
+use SanctionList\Document\Directive;
 
-/**
- * @extends ServiceEntityRepository<Directive>
- *
- * @method Directive|null find($id, $lockMode = null, $lockVersion = null)
- * @method Directive|null findOneBy(array $criteria, array $orderBy = null)
- * @method Directive[]    findAll()
- * @method Directive[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class DirectiveRepository extends ServiceEntityRepository
+class DirectiveRepository extends ServiceDocumentRepository
 {
+    /**
+     * Конструктор
+     *
+     * @param ManagerRegistry $registry менеджер
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Directive::class);
     }
 
-    public function add(Directive $entity, bool $flush = false): void
+    /**
+     * Добавление документа
+     *
+     * @param Directive $document Документ
+     * @param bool $flush Определение сохранять запись или нет
+     *
+     * @return void
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function add(Directive $document, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
-
+        $this->getDocumentManager()->persist($document);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getDocumentManager()->flush();
         }
     }
 
-    public function remove(Directive $entity, bool $flush = false): void
+    /**
+     * Удаление документа
+     *
+     * @param Directive $document Документ
+     * @param bool $flush Определение сохранять запись или нет
+     *
+     * @return void
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function remove(Directive $document, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
-
+        $this->getDocumentManager()->remove($document);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getDocumentManager()->flush();
         }
     }
 
-//    /**
-//     * @return Directive[] Returns an array of Directive objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('d.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Directive
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Получение количества записей
+     *
+     * @return int
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function count(): int
+    {
+        return $this->dm->createQueryBuilder(Directive::class)
+            ->count()->getQuery()->execute();
+    }
 }

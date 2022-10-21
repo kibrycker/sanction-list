@@ -2,65 +2,65 @@
 
 namespace SanctionList\Repository;
 
-use SanctionList\Entity\Organization;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
+use Doctrine\Bundle\MongoDBBundle\Repository\ServiceDocumentRepository;
+use SanctionList\Document\Organization;
 
-/**
- * @extends ServiceEntityRepository<Organization>
- *
- * @method Organization|null find($id, $lockMode = null, $lockVersion = null)
- * @method Organization|null findOneBy(array $criteria, array $orderBy = null)
- * @method Organization[]    findAll()
- * @method Organization[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
-class OrganizationRepository extends ServiceEntityRepository
+class OrganizationRepository extends ServiceDocumentRepository
 {
+    /**
+     * Конструктор
+     *
+     * @param ManagerRegistry $registry менеджер
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Organization::class);
     }
 
-    public function add(Organization $entity, bool $flush = false): void
+    /**
+     * Добавление документа
+     *
+     * @param Organization $document Документ
+     * @param bool $flush Определение сохранять запись или нет
+     *
+     * @return void
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function add(Organization $document, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
-
+        $this->getDocumentManager()->persist($document);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getDocumentManager()->flush();
         }
     }
 
-    public function remove(Organization $entity, bool $flush = false): void
+    /**
+     * Удаление документа
+     *
+     * @param Organization $document Документ
+     * @param bool $flush Определение сохранять запись или нет
+     *
+     * @return void
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function remove(Organization $document, bool $flush = false): void
     {
-        $this->getEntityManager()->remove($entity);
-
+        $this->getDocumentManager()->remove($document);
         if ($flush) {
-            $this->getEntityManager()->flush();
+            $this->getDocumentManager()->flush();
         }
     }
 
-//    /**
-//     * @return SanctionListOrganization[] Returns an array of SanctionListOrganization objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?SanctionListOrganization
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Получение количества записей
+     *
+     * @return int
+     * @throws \Doctrine\ODM\MongoDB\MongoDBException
+     */
+    public function count(): int
+    {
+        return $this->dm->createQueryBuilder(Organization::class)
+            ->count()->getQuery()->execute();
+    }
 }

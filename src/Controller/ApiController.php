@@ -4,15 +4,15 @@ namespace SanctionList\Controller;
 
 use JsonRpc\Controller;
 use SanctionList\DTO\SearchParamsDTO;
-use SanctionList\Repository\OrganizationDocRepository;
+use SanctionList\Repository\OrganizationRepository;
 
 class ApiController extends Controller
 {
     /**
-     * @param OrganizationDocRepository $repository Репозиторий организации
+     * @param OrganizationRepository $repository Репозиторий организации
      */
     public function __construct(
-        private readonly OrganizationDocRepository $repository
+        private readonly OrganizationRepository $repository
     ) {}
 
     /**

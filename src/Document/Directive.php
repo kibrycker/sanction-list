@@ -4,12 +4,12 @@ namespace SanctionList\Document;
 
 use Doctrine\ODM\MongoDB\Types\Type;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
-use SanctionList\Repository\DirectiveDocRepository;
+use SanctionList\Repository\DirectiveRepository;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTimeInterface;
 
 
-#[MongoDB\Document(db: 'sanctions_list', collection: 'directive', repositoryClass: DirectiveDocRepository::class)]
+#[MongoDB\Document(db: 'sanctions_list', collection: 'directive', repositoryClass: DirectiveRepository::class)]
 #[MongoDB\HasLifecycleCallbacks]
 class Directive
 {
