@@ -1,0 +1,12 @@
+{
+  "build/js/sanction-list.js": "/build/js/sanction-list.js",
+  "build/css/sanction-list.css": "/build/css/sanction-list.css",
+  "build/runtime.js": "/build/runtime.js",
+  "build/vendors-node_modules_bootstrap_dist_js_bootstrap_min_js.js": "/build/vendors-node_modules_bootstrap_dist_js_bootstrap_min_js.js",
+  "build/vendors-node_modules_bootstrap_dist_css_bootstrap_min_css-node_modules_font-awesome_css_font--170fbf.css": "/build/vendors-node_modules_bootstrap_dist_css_bootstrap_min_css-node_modules_font-awesome_css_font--170fbf.css",
+  "build/images/fontawesome-webfont.svg?v=4.7.0": "/build/images/fontawesome-webfont.c1e38fd9.svg",
+  "build/fonts/fontawesome-webfont.eot": "/build/fonts/fontawesome-webfont.8b43027f.eot",
+  "build/fonts/fontawesome-webfont.ttf?v=4.7.0": "/build/fonts/fontawesome-webfont.1e59d233.ttf",
+  "build/fonts/fontawesome-webfont.woff?v=4.7.0": "/build/fonts/fontawesome-webfont.f691f37e.woff",
+  "build/fonts/fontawesome-webfont.woff2?v=4.7.0": "/build/fonts/fontawesome-webfont.20fd1704.woff2"
+}
