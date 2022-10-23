@@ -20,12 +20,14 @@
         </tbody>
     </table>
 
-    <div class="text-right">
-        <a href="{{ path('sanction_list_admin_country_edit', {'id': country.id}) }}"
-           class="btn btn-secondary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Изменить</a>
-        &nbsp;
-        <div class="float-right">
-            {{ include('country/_delete_form.html.twig') }}
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="text-right">
+            <a href="{{ path('sanction_list_admin_country_edit', {'id': country.id}) }}"
+               class="btn btn-secondary"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;Изменить</a>
+            &nbsp;
+            <div class="float-right">
+                {{ include('country/_delete_form.html.twig') }}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}

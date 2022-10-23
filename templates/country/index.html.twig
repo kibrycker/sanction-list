@@ -4,7 +4,7 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-{#    <a href="{{ path('sanction_list_admin_organization_index') }}" class="btn btn-link">К списку организаций</a>#}
+    {#    <a href="{{ path('sanction_list_admin_organization_index') }}" class="btn btn-link">К списку организаций</a> #}
     <h1>{{ title }}</h1>
 
     {% if is_granted('ROLE_ADMIN') %}
@@ -18,11 +18,9 @@
             <th scope="col" rowspan="2">#</th>
             <th scope="col" rowspan="2">Название</th>
             <th scope="col" colspan="2" class="text-center">Дата</th>
-            {% if is_granted('ROLE_ADMIN') %}
-                <th scope="col" rowspan="2">
-                    Действия&nbsp;&nbsp;&nbsp;
-                </th>
-            {% endif %}
+            <th scope="col" rowspan="2">
+                Действия&nbsp;&nbsp;&nbsp;
+            </th>
         </tr>
         <tr>
             <th scope="col">Создания</th>
@@ -36,16 +34,20 @@
                 <td>{{ country.name }}</td>
                 <td>{{ country.dateCreate ? country.dateCreate|date('d.m.Y H:i:s') : '' }}</td>
                 <td>{{ country.dateUpdate ? country.dateUpdate|date('d.m.Y H:i:s') : '' }}</td>
-                {% if is_granted('ROLE_ADMIN') %}
-                    <td>
+                <td>
+                    {% if is_granted('ROLE_ADMIN') %}
                         <a href="{{ path('sanction_list_admin_country_show', {'id': country.id}) }}"
                            class="btn btn-info" data-toggle="tooltip" title="Просмотр"><i class="fa fa-eye"
                                                                                           aria-hidden="true"></i></a>
                         <a href="{{ path('sanction_list_admin_country_edit', {'id': country.id}) }}"
                            class="btn btn-secondary" data-toggle="tooltip" title="Изменить"><i
                                     class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                    </td>
-                {% endif %}
+                    {% else %}
+                        <a href="{{ path('sanction_list_country_show', {'id': country.id}) }}"
+                           class="btn btn-info" data-toggle="tooltip" title="Просмотр"><i class="fa fa-eye"
+                                                                                          aria-hidden="true"></i></a>
+                    {% endif %}
+                </td>
             </tr>
         {% else %}
             <tr>
