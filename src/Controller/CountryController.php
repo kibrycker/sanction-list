@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/sanction-list/admin/country')]
+#[Route('/country')]
 class CountryController extends AbstractController
 {
     /** @var int Лимит выводимого списка */
@@ -38,7 +38,7 @@ class CountryController extends AbstractController
      */
     #[Route(
         '/{page}',
-        name: 'sanction_list_admin_country_index',
+        name: 'sanction_list_country_index',
         requirements: ['page' => "\d+"],
         methods: ['GET']
     )]
@@ -53,41 +53,12 @@ class CountryController extends AbstractController
             'page' => $page,
             'countPages' => $countPages,
             'offset' => $offset,
-            'urlPath' => 'sanction_list_admin_country_index',
+            'urlPath' => 'sanction_list_country_index',
         ]);
         return $this->render('country/index.html.twig', [
             'offset' => $offset,
             'countries' => $countries,
             'pagination' => $pagination,
-        ]);
-    }
-
-    /**
-     * Создание новой записи
-     *
-     * @param Request $request Запрос
-     *
-     * @return Response
-     * @throws \Doctrine\ODM\MongoDB\MongoDBException
-     */
-    #[Route('/new', name: 'sanction_list_admin_country_new', methods: ['GET', 'POST'])]
-    public function new(Request $request): Response
-    {
-        $country = new Country();
-        $form = $this->createForm(CountryType::class, $country);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->repository->add($country, true);
-
-            return $this->redirectToRoute('sanction_list_admin_country_index', [
-
-            ], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('country/new.html.twig', [
-            'country' => $country,
-            'form' => $form,
         ]);
     }
 
@@ -100,67 +71,12 @@ class CountryController extends AbstractController
      * @throws \Doctrine\ODM\MongoDB\LockException
      * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
      */
-    #[Route('/{id}', name: 'sanction_list_admin_country_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'sanction_list_country_show', methods: ['GET'])]
     public function show(Request $request): Response
     {
         $country = $this->repository->find($request->get('id'));
         return $this->render('country/show.html.twig', [
             'country' => $country,
         ]);
-    }
-
-    /**
-     * Редактирование записи
-     *
-     * @param Request $request Запрос
-     *
-     * @return Response
-     * @throws \Doctrine\ODM\MongoDB\LockException
-     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
-     * @throws \Doctrine\ODM\MongoDB\MongoDBException
-     */
-    #[Route('/{id}/edit', name: 'sanction_list_admin_country_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request): Response
-    {
-        $country = $this->repository->find($request->get('id'));
-        $form = $this->createForm(CountryType::class, $country);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->repository->add($country, true);
-
-            return $this->redirectToRoute('sanction_list_admin_country_index', [
-
-            ], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('country/edit.html.twig', [
-            'country' => $country,
-            'form' => $form,
-        ]);
-    }
-
-    /**
-     * Удаление записи
-     *
-     * @param Request $request Запрос
-     *
-     * @return Response
-     * @throws \Doctrine\ODM\MongoDB\LockException
-     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
-     * @throws \Doctrine\ODM\MongoDB\MongoDBException
-     */
-    #[Route('/{id}', name: 'sanction_list_admin_country_delete', methods: ['POST'])]
-    public function delete(Request $request): Response
-    {
-        $country = $this->repository->find($request->get('id'));
-        if ($this->isCsrfTokenValid('delete' . $country->getId(),
-            $request->request->get('_token'))) {
-            $this->repository->remove($country, true);
-        }
-
-        return $this->redirectToRoute('sanction_list_admin_country_index', [
-
-        ], Response::HTTP_SEE_OTHER);
     }
 }
