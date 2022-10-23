@@ -12,7 +12,7 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Главная</a>
             </li>
-            <li class="nav-item {% if pathRoute matches '/sanction_list_*_organization*/' %}active{% endif %}">
+            <li class="nav-item {% if pathRoute matches '/_organization*/' %}active{% endif %}">
                 {% if is_granted('ROLE_ADMIN') %}
                     {% set link = path('sanction_list_admin_organization_index') %}
                 {% else %}
@@ -20,7 +20,7 @@
                 {% endif %}
                 <a class="nav-link" href="{{ link }}">Организации</a>
             </li>
-            <li class="nav-item {% if pathRoute matches '/sanction_list_*_country*/' %}active{% endif %}">
+            <li class="nav-item {% if pathRoute matches '/_country*/' %}active{% endif %}">
                 {% if is_granted('ROLE_ADMIN') %}
                     {% set link = path('sanction_list_admin_country_index') %}
                 {% else %}
@@ -28,7 +28,7 @@
                 {% endif %}
                 <a class="nav-link" href="{{ link }}">Страны</a>
             </li>
-            <li class="nav-item {% if pathRoute matches '/sanction_list_*_directive_*/' %}active{% endif %}">
+            <li class="nav-item {% if pathRoute matches '/_directive_*/' %}active{% endif %}">
                 {% if is_granted('ROLE_ADMIN') %}
                     {% set link = path('sanction_list_admin_directive_index') %}
                 {% else %}
@@ -36,10 +36,10 @@
                 {% endif %}
                 <a class="nav-link" href="{{ link }}">Директивы</a>
             </li>
-            <li class="nav-item {% if pathRoute matches '/sanction_list_admin_directive_*/' %}active{% endif %}">
+            <li class="nav-item {% if pathRoute matches '/_dashboard_*/' %}active{% endif %}">
                 <a class="nav-link" href="{{ path('sanction_list_admin_dashboard_index') }}">Панель управления</a>
             </li>
-            {#<li class="nav-item dropdown">
+            {# <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
                     Добавление санкций
@@ -55,13 +55,19 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Отключенный</a>
-            </li>#}
+            </li> #}
         </ul>
     </div>
     <div>
         <ul class="nav justify-content-end">
+            {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ logout_path() }}">Выйти</a>
+                </li>
+            {% endif %}
             <li class="nav-item pull-right">
-                <a class="nav-link" href="{{ path('sanction_list_admin_directive_index') }}"><i class="fa fa-question-circle" aria-hidden="true"></i></a>
+                <a class="nav-link" href="{{ path('sanction_list_admin_directive_index') }}"><i
+                            class="fa fa-question-circle" aria-hidden="true"></i></a>
             </li>
         </ul>
     </div>
