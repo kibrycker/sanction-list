@@ -12,14 +12,32 @@
             <li class="nav-item">
                 <a class="nav-link" href="/">Главная</a>
             </li>
-            <li class="nav-item {% if pathRoute matches '/sanction_list_admin_organization*/' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('sanction_list_admin_organization_index') }}">Организации</a>
+            <li class="nav-item {% if pathRoute matches '/sanction_list_*_organization*/' %}active{% endif %}">
+                {% if is_granted('ROLE_ADMIN') %}
+                    {% set link = path('sanction_list_admin_organization_index') %}
+                {% else %}
+                    {% set link = path('sanction_list_organization_index') %}
+                {% endif %}
+                <a class="nav-link" href="{{ link }}">Организации</a>
             </li>
-            <li class="nav-item {% if pathRoute matches '/sanction_list_admin_country*/' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('sanction_list_admin_country_index') }}">Страны</a>
+            <li class="nav-item {% if pathRoute matches '/sanction_list_*_country*/' %}active{% endif %}">
+                {% if is_granted('ROLE_ADMIN') %}
+                    {% set link = path('sanction_list_admin_country_index') %}
+                {% else %}
+                    {% set link = path('sanction_list_country_index') %}
+                {% endif %}
+                <a class="nav-link" href="{{ link }}">Страны</a>
+            </li>
+            <li class="nav-item {% if pathRoute matches '/sanction_list_*_directive_*/' %}active{% endif %}">
+                {% if is_granted('ROLE_ADMIN') %}
+                    {% set link = path('sanction_list_admin_directive_index') %}
+                {% else %}
+                    {% set link = path('sanction_list_directive_index') %}
+                {% endif %}
+                <a class="nav-link" href="{{ link }}">Директивы</a>
             </li>
             <li class="nav-item {% if pathRoute matches '/sanction_list_admin_directive_*/' %}active{% endif %}">
-                <a class="nav-link" href="{{ path('sanction_list_admin_directive_index') }}">Директивы</a>
+                <a class="nav-link" href="{{ path('sanction_list_admin_dashboard_index') }}">Панель управления</a>
             </li>
             {#<li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"

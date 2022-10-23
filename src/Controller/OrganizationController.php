@@ -56,7 +56,7 @@ class OrganizationController extends AbstractController
             'page' => $page,
             'countPages' => $countPages,
             'offset' => $offset,
-            'urlPath' => 'sanction_list_admin_organization_index',
+            'urlPath' => 'sanction_list_organization_index',
         ]);
         return $this->render('organization/index.html.twig', [
             'offset' => $offset,
