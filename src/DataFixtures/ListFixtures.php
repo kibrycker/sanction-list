@@ -50,6 +50,13 @@ class ListFixtures extends Fixture
         $this->loadOrganization($manager);
     }
 
+    /**
+     * Генерация и загрузка фейковых пользователей
+     *
+     * @param ObjectManager $manager Менеджер объектов для сохранения данных
+     *
+     * @return void
+     */
     private function loadUser(ObjectManager $manager): void
     {
         for ($i = 0; $i < 3; $i++) {
