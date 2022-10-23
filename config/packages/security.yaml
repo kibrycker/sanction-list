@@ -7,7 +7,7 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         database_users:
-            entity: { class: SanctionList\Entity\User, property: username }
+            mongodb: { class: SanctionList\Document\User, property: username }
 #        users_in_memory: { memory: null }
     firewalls:
         dev:
@@ -20,10 +20,10 @@ security:
 
             form_login:
                 # The route name that the login form submits to
-                check_path: security_login
+                check_path: sanction_list_security_login
                 # The name of the route where the login form lives
                 # When the user tries to access a protected page, they are redirected here
-                login_path: security_login
+                login_path: sanction_list_security_login
                 # Secure the login form against CSRF
                 # Reference: https://symfony.com/doc/current/security/csrf.html
                 enable_csrf: true
@@ -33,9 +33,10 @@ security:
 
             logout:
                 # The route name the user can go to in order to logout
-                path: security_logout
+                path: sanction_list_security_logout
                 # The name of the route to redirect to after logging out
-                target: homepage
+#                target: homepage
+                target: sanction_list_organization_index
 
                 # Secure the logout against CSRF
                 csrf_parameter: logout
