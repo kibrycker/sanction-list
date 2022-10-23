@@ -4,12 +4,13 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <a href="{{ path('sanction_list_admin_organization_index') }}" class="btn btn-link">К списку организаций</a>
     <h1>{{ title }}</h1>
 
-    <div class="text-right">
-        <a href="{{ path('sanction_list_admin_directive_new') }}" class="btn btn-link">Новая директива</a>
-    </div>
+    {% if is_granted('ROLE_ADMIN') %}
+        <div class="text-right">
+            <a href="{{ path('sanction_list_admin_directive_new') }}" class="btn btn-link">Новая директива</a>
+        </div>
+    {% endif %}
     <table class="table table-striped table-bordered text-center">
         <thead class="thead-dark">
         <tr>
@@ -33,10 +34,15 @@
                 <td>{{ directive.dateCreate ? directive.dateCreate|date('d.m.Y H:i:s') : '' }}</td>
                 <td>{{ directive.dateUpdate ? directive.dateUpdate|date('d.m.Y H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('sanction_list_admin_directive_show', {'id': directive.id}) }}"
-                       class="btn btn-info" data-toggle="tooltip" title="Просмотр"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                    <a href="{{ path('sanction_list_admin_directive_edit', {'id': directive.id}) }}"
-                       class="btn btn-secondary" data-toggle="tooltip" title="Изменить"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('sanction_list_admin_directive_show', {'id': directive.id}) }}"
+                           class="btn btn-info" data-toggle="tooltip" title="Просмотр"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                        <a href="{{ path('sanction_list_admin_directive_edit', {'id': directive.id}) }}"
+                           class="btn btn-secondary" data-toggle="tooltip" title="Изменить"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+                    {% else %}
+                        <a href="{{ path('sanction_list_directive_show', {'id': directive.id}) }}"
+                           class="btn btn-info" data-toggle="tooltip" title="Просмотр"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

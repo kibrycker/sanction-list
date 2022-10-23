@@ -54,7 +54,7 @@ class DirectiveController extends AbstractController
             'page' => $page,
             'countPages' => $countPages,
             'offset' => $offset,
-            'urlPath' => 'sanction_list_admin_directive_index',
+            'urlPath' => 'sanction_list_directive_index',
         ]);
         return $this->render('directive/index.html.twig', [
             'offset' => $offset,
