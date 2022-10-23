@@ -67,8 +67,8 @@ class ListFixtures extends Fixture
             $user->setUsername($username);
             $user->setEmail($faker->email());
             $user->setPassword($this->password->hashPassword($user, $username));
-            $roles = ['ROLE_ADMIN', 'ROLE_USER'];
-            $user->setRoles([$roles[rand(0, 1)]]);
+            $roles = ['ROLE_ADMIN', 'ROLE_ADMIN', 'ROLE_USER'];
+            $user->setRoles([$roles[$i]]);
             $manager->persist($user);
             $this->addReference($username, $user);
             $manager->flush();
@@ -89,6 +89,9 @@ class ListFixtures extends Fixture
             $faker = Factory::create(self::FAKER_LOCALE);
             $country = new Country();
             $country->setName($faker->country());
+            $user = $this->getUser();
+//            var_dump($user);
+            $country->setUser($user);
             $dateCreate = $faker->dateTime();
             $dateUpdate = $faker->dateTimeInInterval($dateCreate, '+ ' . $this->getRandom() . ' days');
             $country->setDateCreate($dateCreate);
@@ -163,11 +166,29 @@ class ListFixtures extends Fixture
     }
 
     /**
+     * Получение случайного администратора
+     *
+     * @return User|null
+     * @throws \Doctrine\ODM\MongoDB\LockException
+     * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @throws \Exception
+     */
+    private function getUser(): ?User
+    {
+        $user = $this->dm->getRepository(User::class)->findBy([
+            'roles' => 'ROLE_ADMIN'
+        ]);
+        $index = rand(0, count($user) - 1);
+        return $user[$index];
+    }
+
+    /**
      * Получение рандомной записи директивы, или возвращааем null
      *
      * @return Country|null
      * @throws \Doctrine\ODM\MongoDB\LockException
      * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @throws \Exception
      */
     private function getCountryRandom(): ?Country
     {
@@ -183,6 +204,7 @@ class ListFixtures extends Fixture
      * @return Directive|null
      * @throws \Doctrine\ODM\MongoDB\LockException
      * @throws \Doctrine\ODM\MongoDB\Mapping\MappingException
+     * @throws \Exception
      */
     private function getDirectiveRandom(): ?Directive
     {
@@ -199,10 +221,9 @@ class ListFixtures extends Fixture
      * Получение рандомного числа
      *
      * @return int
-     * @throws \Exception
      */
     private function getRandom(): int
     {
-        return random_int(1, 10000);
+        return rand(1, 10000);
     }
 }
