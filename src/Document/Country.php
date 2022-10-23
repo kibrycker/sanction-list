@@ -15,30 +15,38 @@ class Country
     /**
      * @param string|null $id Идентификатор записи
      * @param string|null $name Название страны, союза, организации
+     * @param User|null $user Пользователь добавивший запись
      * @param DateTimeInterface|null $dateCreate Дата создания записи
      * @param DateTimeInterface|null $dateUpdate Дата обновления записи
      */
     public function __construct(
-        #[MongoDB\Id(name: '_id', type: Type::OBJECTID, options: [
-            'comment' => 'Идентификатор записи'
+        #[MongoDB\Id(name: '_id', type: Type::BINDATAUUIDRFC4122, options: [
+            'comment' => 'Идентификатор записи',
         ], strategy: 'AUTO')]
 //        #[MongoDB\ReferenceMany(targetDocument: Organization::class)]
-        public ?string $id = null,
+        private ?string $id = null,
 
         #[MongoDB\Field(name: 'name', type: Type::STRING, options: [
-            'comment' => 'Название страны, союза, организации'
+            'comment' => 'Название страны, союза, организации',
         ])]
         #[Assert\Length(max: 150, maxMessage: 'Максимум 150 символов')]
-        private ?string $name = null,
+        private ?string            $name = null,
+
+        #[MongoDB\ReferenceOne(options: [
+            'comment' => 'Пользователь добавивший запись',
+        ], targetDocument: User::class)]
+        #[MongoDB\Index()]
+        #[Assert\NotBlank]
+        private ?User              $user = null,
 
         #[MongoDB\Field(name: 'dateCreate', type: Type::DATE_IMMUTABLE, options: [
-            'comment' => 'Дата создания записи'
+            'comment' => 'Дата создания записи',
         ])]
         #[MongoDB\Index()]
         private ?DateTimeInterface $dateCreate = null,
 
         #[MongoDB\Field(name: 'dateUpdate', type: Type::DATE_IMMUTABLE, options: [
-            'comment' => 'Дата обновления записи'
+            'comment' => 'Дата обновления записи',
         ])]
         #[MongoDB\Index()]
         private ?DateTimeInterface $dateUpdate = null
@@ -75,6 +83,29 @@ class Country
     {
         $this->name = $name;
 
+        return $this;
+    }
+
+    /**
+     * Получение пользователя
+     *
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * Установим пользователя
+     *
+     * @param User $user Пользователь
+     *
+     * @return $this
+     */
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
         return $this;
     }
 
