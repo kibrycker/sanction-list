@@ -9,6 +9,8 @@ use Faker\Factory;
 use SanctionList\Document\Country;
 use SanctionList\Document\Directive;
 use SanctionList\Document\Organization;
+use SanctionList\Document\User;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 /**
  * Создание фейковых данных
@@ -27,7 +29,10 @@ class ListFixtures extends Fixture
     /**
      * @param DocumentManager $dm Менеджер документов
      */
-    public function __construct(protected DocumentManager $dm) {}
+    public function __construct(
+        protected UserPasswordHasherInterface $password,
+        protected DocumentManager $dm
+    ) {}
 
     /**
      * Загрузка всех данных
@@ -39,9 +44,28 @@ class ListFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
+        $this->loadUser($manager);
         $this->loadCountry($manager);
         $this->loadDirective($manager);
         $this->loadOrganization($manager);
+    }
+
+    private function loadUser(ObjectManager $manager): void
+    {
+        for ($i = 0; $i < 3; $i++) {
+            $faker = Factory::create(self::FAKER_LOCALE);
+            $user = new User();
+            $user->setFullName($faker->firstName());
+            $username = $faker->userName();
+            $user->setUsername($username);
+            $user->setEmail($faker->email());
+            $user->setPassword($this->password->hashPassword($user, $username));
+            $roles = ['ROLE_ADMIN', 'ROLE_USER'];
+            $user->setRoles([$roles[rand(0, 1)]]);
+            $manager->persist($user);
+            $this->addReference($username, $user);
+            $manager->flush();
+        }
     }
 
     /**
@@ -63,8 +87,8 @@ class ListFixtures extends Fixture
             $country->setDateCreate($dateCreate);
             $country->setDateUpdate($dateUpdate);
             $manager->persist($country);
-            $manager->flush();
         }
+        $manager->flush();
     }
 
     /**
@@ -87,8 +111,8 @@ class ListFixtures extends Fixture
             $directive->setDateCreate($dateCreate);
             $directive->setDateUpdate($dateUpdate);
             $manager->persist($directive);
-            $manager->flush();
         }
+        $manager->flush();
     }
 
     /**
@@ -127,8 +151,8 @@ class ListFixtures extends Fixture
             $dateUpdate = $faker->dateTimeInInterval($dateCreate, '+ ' . $this->getRandom() . ' days');
             $org->setDateUpdate($dateUpdate);
             $manager->persist($org);
-            $manager->flush();
         }
+        $manager->flush();
     }
 
     /**
