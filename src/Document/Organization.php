@@ -108,6 +108,13 @@ class Organization
     #[MongoDB\Index()]
     private ?Directive $directive = null;
 
+    #[MongoDB\ReferenceOne(options: [
+        'comment' => 'Пользователь добавивший запись',
+    ], targetDocument: User::class)]
+    #[MongoDB\Index()]
+    #[Assert\NotBlank]
+    private ?User $user = null;
+
     /** @var DateTimeInterface|null $dateCreate Дата создания записи */
     #[MongoDB\Field(type: Type::DATE_IMMUTABLE, options: [
         'comment' => 'Дата создания записи',
@@ -369,6 +376,29 @@ class Organization
     {
         $this->directive = $directive;
 
+        return $this;
+    }
+
+    /**
+     * Получение юзера
+     *
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * Установка юзера
+     *
+     * @param User $user Юзер, добавивший запись
+     *
+     * @return $this
+     */
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
         return $this;
     }
 

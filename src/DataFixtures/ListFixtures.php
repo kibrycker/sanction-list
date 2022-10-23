@@ -71,8 +71,8 @@ class ListFixtures extends Fixture
             $user->setRoles([$roles[$i]]);
             $manager->persist($user);
             $this->addReference($username, $user);
-            $manager->flush();
         }
+        $manager->flush();
     }
 
     /**
@@ -89,9 +89,7 @@ class ListFixtures extends Fixture
             $faker = Factory::create(self::FAKER_LOCALE);
             $country = new Country();
             $country->setName($faker->country());
-            $user = $this->getUser();
-//            var_dump($user);
-            $country->setUser($user);
+            $country->setUser($this->getUser());
             $dateCreate = $faker->dateTime();
             $dateUpdate = $faker->dateTimeInInterval($dateCreate, '+ ' . $this->getRandom() . ' days');
             $country->setDateCreate($dateCreate);
@@ -116,6 +114,7 @@ class ListFixtures extends Fixture
             $directive = new Directive();
             $directive->setName($faker->word());
             $directive->setDescription($faker->text());
+            $directive->setUser($this->getUser());
             $dateCreate = $faker->dateTime();
             $dateUpdate = $faker->dateTimeInInterval($dateCreate, '+ ' . $this->getRandom() . ' days');
             $directive->setDateCreate($dateCreate);
@@ -156,6 +155,7 @@ class ListFixtures extends Fixture
             $org->setUnknownExcDate((bool)$isUnknownExcDate);
             $org->setBasic(rand(0, 1) ? $faker->text(rand(10, 200)) : null);
             $org->setDirective($this->getDirectiveRandom());
+            $org->setUser($this->getUser());
             $dateCreate = $faker->dateTime();
             $org->setDateCreate($dateCreate);
             $dateUpdate = $faker->dateTimeInInterval($dateCreate, '+ ' . $this->getRandom() . ' days');

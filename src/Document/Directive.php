@@ -17,29 +17,36 @@ class Directive
         #[MongoDB\Id(name: '_id', type: Type::OBJECTID, options: [
             'comment' => 'Идентификатор записи',
         ])]
-//        #[MongoDB\ReferenceMany(mappedBy: 'directive', collectionClass: Organization::class)]
-        protected ?string $id = null,
+                                   //        #[MongoDB\ReferenceMany(mappedBy: 'directive', collectionClass: Organization::class)]
+        private ?string $id = null,
 
         #[MongoDB\Field(type: Type::STRING, options: ['comment' => 'Название директивы'])]
         #[Assert\NotBlank(message: 'Заполните название директивы')]
         #[Assert\Length(min: 3, minMessage: 'Минимум 3 символа')]
-        protected ?string            $name = null,
+        private ?string            $name = null,
 
         #[MongoDB\Field(type: Type::STRING, options: ['comment' => 'Описание'])]
         #[Assert\Length(min: 3, minMessage: 'Минимум 3 символа')]
-        protected ?string            $description = null,
+        private ?string            $description = null,
+
+        #[MongoDB\ReferenceOne(options: [
+            'comment' => 'Пользователь добавивший запись',
+        ], targetDocument: User::class)]
+        #[MongoDB\Index()]
+        #[Assert\NotBlank]
+        private ?User              $user = null,
 
         #[MongoDB\Field(name: 'dateCreate', type: Type::DATE_IMMUTABLE, options: [
             'comment' => 'Дата создания записи',
         ])]
         #[MongoDB\Index()]
-        protected ?DateTimeInterface $dateCreate = null,
+        private ?DateTimeInterface $dateCreate = null,
 
         #[MongoDB\Field(name: 'dateUpdate', type: Type::DATE_IMMUTABLE, options: [
             'comment' => 'Дата обновления записи',
         ])]
         #[MongoDB\Index()]
-        protected ?DateTimeInterface $dateUpdate = null
+        private ?DateTimeInterface $dateUpdate = null
     ) {}
 
     /**
@@ -101,6 +108,29 @@ class Directive
     }
 
     /**
+     * Получение юзера
+     *
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    /**
+     * Установка юзера
+     *
+     * @param User $user Юзер, добавивший запись
+     *
+     * @return $this
+     */
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
      * Получение даты создания записи
      *
      * @return DateTimeInterface|null
@@ -150,6 +180,7 @@ class Directive
 
     /**
      * Преобразование в строку значения
+     *
      * @return string|null
      */
     public function __toString()
